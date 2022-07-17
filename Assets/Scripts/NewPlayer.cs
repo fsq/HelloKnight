@@ -83,6 +83,7 @@ public class NewPlayer : MonoBehaviour
         // Sleeping objs can't trigger collision.
         _rb.sleepMode = RigidbodySleepMode2D.NeverSleep;
         Health = MaxHealth;
+        _rb.gravityScale = _defaultGravityScale;
     }
 
     private void Update()
