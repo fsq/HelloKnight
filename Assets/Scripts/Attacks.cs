@@ -4,5 +4,5 @@ using UnityEngine;
 
 interface Attacks
 {
-    void SetDamage(float damage);
+    public float Damage { set; }
 }

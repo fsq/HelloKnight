@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] public float Damage { get; private set; }
+    [SerializeField] private float _damage;
+    public float Damage { get => _damage; set => _damage = value; }
     [SerializeField] private float _lifeSpan = 3;
-
-    public void SetDamage(float damage)
-    {
-        Damage = damage;
-    }
 
     private void Start()
     {

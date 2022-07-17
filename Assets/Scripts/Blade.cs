@@ -4,12 +4,8 @@ using UnityEngine;
 
 public class Blade : MonoBehaviour, Attacks
 {
-    [SerializeField] public float Damage { get; private set; }
-
-    public void SetDamage(float damage)
-    {
-        Damage = damage;
-    }
+    [SerializeField] private float _damage;
+    public float Damage { get => _damage; set => _damage = value; }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
