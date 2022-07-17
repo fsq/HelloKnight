@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class NewPlayer : MonoBehaviour
 {
+    [Header("Movement")]
     [SerializeField] private float _horizontalSpeed = 9f;
     [SerializeField] private float _jumpBuffer = 0.1f;
     [SerializeField] private float _jumpForce = 20f;
@@ -14,19 +15,28 @@ public class NewPlayer : MonoBehaviour
     [SerializeField] private float _maxJumpHoldTime = 0.35f;
     [SerializeField] private float _minJumpHoldTime = 0.2f;
     [SerializeField] private float _maxFallSpeed = 18f;
+    [SerializeField] private GameObject PlayerFeet;
+    [Space(10)]
 
+    [Header("Attack")]
     [SerializeField] private float _bladeAttackLastTime = 0.2f;
     [SerializeField] private float _bulletAttackLastTime = 0.2f;
     [SerializeField] private float _attackBuffer = 0.15f;
     [SerializeField] private float _attackCoolDown = 0.3f;
     [SerializeField] private float _bulletSpeed = 20f;
-
-    [SerializeField] private GameObject PlayerFeet;
+    [SerializeField] private float _bladeDamage = 10;
+    public float BladeDamage { get => _bladeDamage; set => _bladeDamage = value; }
+    [SerializeField] private float _bulletDamage = 15;
+    public float BulletDamage { get => _bulletDamage; set => _bulletDamage = value; }
     [SerializeField] private GameObject AttackBlade;
     [SerializeField] private GameObject AttackBullet;
+    [Space(10)]
 
-    [SerializeField] public float BladeDamage { get; set; } = 10;
-    [SerializeField] public float BulletDamage { get; set; } = 15;
+    [SerializeField] private float _maxHealth = 100;
+    public float MaxHealth { get => _maxHealth; set => _maxHealth = value; }
+
+    [SerializeField] private float _health;
+    public float Health { get => _health; private set => _health = value; }
 
     public FrameInput FrameInput { get; private set; }
 
@@ -62,6 +72,7 @@ public class NewPlayer : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        Health = MaxHealth;
     }
 
     private void Update()
