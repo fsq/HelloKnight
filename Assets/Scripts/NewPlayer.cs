@@ -79,6 +79,9 @@ public class NewPlayer : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
+        // Prevent sleeping for continous collision detection. 
+        // Sleeping objs can't trigger collision.
+        _rb.sleepMode = RigidbodySleepMode2D.NeverSleep;
         Health = MaxHealth;
     }
 
