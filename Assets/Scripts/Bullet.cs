@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
             monster.TakeDamage(Damage);
             Destroy(gameObject);
         }
-        else if (other.CompareTag(Constants.kGround))
+        else if (other.CompareTag(Constants.kTagGround))
         {
             Destroy(gameObject);
         }

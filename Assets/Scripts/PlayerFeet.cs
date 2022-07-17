@@ -14,7 +14,7 @@ public class PlayerFeet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.CompareTag(Constants.kGround))
+        if (collider.CompareTag(Constants.kTagGround))
         {
             ++numGround;
         }
@@ -22,7 +22,7 @@ public class PlayerFeet : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.CompareTag(Constants.kGround))
+        if (collider.CompareTag(Constants.kTagGround))
         {
             --numGround;
         }

@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NewPlayer : MonoBehaviour
 {
+    #region Serialize Fields
+
     [Header("Movement")]
     [SerializeField] private float _horizontalSpeed = 9f;
     [SerializeField] private float _jumpBuffer = 0.1f;
@@ -28,6 +31,7 @@ public class NewPlayer : MonoBehaviour
     public float BladeDamage { get => _bladeDamage; set => _bladeDamage = value; }
     [SerializeField] private float _bulletDamage = 15;
     public float BulletDamage { get => _bulletDamage; set => _bulletDamage = value; }
+    [SerializeField] private float _hitRecoverTime = 0.5f;  // Invulnerable time after hit.
     [SerializeField] private GameObject AttackBlade;
     [SerializeField] private GameObject AttackBullet;
     [Space(10)]
@@ -37,6 +41,8 @@ public class NewPlayer : MonoBehaviour
 
     [SerializeField] private float _health;
     public float Health { get => _health; private set => _health = value; }
+
+    #endregion
 
     public FrameInput FrameInput { get; private set; }
 
@@ -50,6 +56,7 @@ public class NewPlayer : MonoBehaviour
     private float _lastAttackDown = Constants.kNever;
     private Constants.AttackType _lastAttackType = Constants.AttackType.None;
     private float _lastAttackFinish = Constants.kNever;
+    private float _lastHit = Constants.kNever;
     private bool _earlyTerminateAttack;
     #endregion
 
@@ -77,7 +84,7 @@ public class NewPlayer : MonoBehaviour
 
     private void Update()
     {
-        BoundaryCheck();
+        DieCheck();
 
         GatherInput();
         Land();
@@ -353,10 +360,10 @@ public class NewPlayer : MonoBehaviour
         return Mathf.Max(0, a * holdTime + b);
     }
 
-    private void BoundaryCheck()
+    private void DieCheck()
     {
         //  TODO: parameterize
-        if (transform.position.y < -30)
+        if (transform.position.y < -30 || Health <= 0)
         {
             Die();
         }
@@ -365,5 +372,32 @@ public class NewPlayer : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
+        SceneManager.LoadScene(Constants.kSceneDefault);
+    }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        var obj = other.gameObject;
+        if (obj.CompareTag(Constants.kTagMonsters))
+        {
+            // Still recovering from last hit.
+            if (_lastHit + _hitRecoverTime > Time.time)
+            {
+                return;
+            }
+            else
+            {
+                _lastHit = Time.time;
+            }
+            var monster = obj.GetComponent<Monsters>();
+            if (monster == null) return;
+            UnderAttack(monster.Damage);
+        }
+    }
+
+    private void UnderAttack(float damage)
+    {
+        Health -= damage;
+        // Shock time
     }
 }

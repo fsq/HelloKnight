@@ -4,8 +4,9 @@ using UnityEngine;
 
 interface Monsters
 {
-    float GetHealth();
-    float GetMaxHealth();
+    float Health { get; }
+    float MaxHealth { get; }
+    float Damage { get; }
 
     void TakeDamage(float damage);
 }

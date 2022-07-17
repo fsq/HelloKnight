@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Zombie1 : MonoBehaviour, Monsters
 {
-    [SerializeField] public float MaxHealth = 100;
-    [SerializeField] public float Health = 100;
+    [SerializeField] private float _maxHealth = 100;
+    public float MaxHealth { get => _maxHealth; }
 
+    [SerializeField] public float _health = 100;
+    public float Health { get => _health; private set => _health = value; }
 
-    public float GetHealth() => Health;
-    public float GetMaxHealth() => MaxHealth;
+    [SerializeField] public float _damage = 20;
+    public float Damage { get => _damage; }
 
     public void TakeDamage(float damage)
     {

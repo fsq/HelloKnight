@@ -4,18 +4,29 @@ using UnityEngine;
 
 public class Constants
 {
-    public static string kGround = "Ground";
+    #region Input
     public static string kHorizontal = "Horizontal";
     public static string kJump = "Jump";
-    public static string kPlayer = "Player";
+    #endregion
 
+    #region Attacks
     public enum AttackType { None, Blade, Bullet }
     public static string kBladeAttack = "Fire1";
     public static string kBulletAttack = "Fire2";
+    #endregion
 
     public static float kNever = -100;
+
+    #region Tags
+    public static string kTagPlayer = "Player";
+    public static string kTagGround = "Ground";
     public static string kTagPlayerAttack = "PlayerAttack";
     public static string kTagMonsters = "Monsters";
+    #endregion
+
+    #region Scenes
+    public static string kSceneDefault = "Level";
+    #endregion
 }
 
 public class FrameInput

@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag(Constants.kGround))
+        if (collision.collider.CompareTag(Constants.kTagGround))
         {
             jumpHoldTime_ = 0;
             rb_.gravityScale = defaultGravityScale;

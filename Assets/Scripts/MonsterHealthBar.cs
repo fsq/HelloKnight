@@ -58,6 +58,6 @@ public class MonsterHealthBar : MonoBehaviour
 
     private float GetPercentage()
     {
-        return _monster.GetHealth() / _monster.GetMaxHealth();
+        return _monster.Health / _monster.MaxHealth;
     }
 }
