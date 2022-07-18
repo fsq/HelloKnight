@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-interface Monsters
+public abstract class Monsters : MonoBehaviour
 {
-    float Health { get; }
-    float MaxHealth { get; }
-    float Damage { get; }
+    abstract public float Health { get; set; }
 
-    void TakeDamage(float damage);
+    abstract public float MaxHealth { get; set; }
+
+    abstract public float Damage { get; set; }
+
+    abstract public void TakeDamage(float damage);
+
+    virtual protected void Die() => Destroy(gameObject);
 }

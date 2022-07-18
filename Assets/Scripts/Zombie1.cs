@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Zombie1 : MonoBehaviour, Monsters
+public class Zombie1 : Monsters
 {
     [SerializeField] private float _maxHealth = 100;
-    public float MaxHealth { get => _maxHealth; }
+    public override float MaxHealth { get => _maxHealth; set => _maxHealth = value; }
 
     [SerializeField] private float _health = 100;
-    public float Health { get => _health; private set => _health = value; }
+    public override float Health { get => _health; set => _health = value; }
 
     [SerializeField] private float _damage = 20;
-    public float Damage { get => _damage; }
+    public override float Damage { get => _damage; set => _damage = value; }
 
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private float _trackingDistance = 1.2f;
@@ -20,21 +20,6 @@ public class Zombie1 : MonoBehaviour, Monsters
     [SerializeField] private GameObject _target;
 
     private bool _wasHit;
-
-    public void TakeDamage(float damage)
-    {
-        Health -= damage;
-        if (Health <= 0)
-        {
-            Die();
-        }
-        _wasHit = true;
-    }
-
-    private void Die()
-    {
-        Destroy(gameObject);
-    }
 
     void Start() { }
 
@@ -61,5 +46,15 @@ public class Zombie1 : MonoBehaviour, Monsters
         {
             // Attack
         }
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        Health -= damage;
+        if (Health <= 0)
+        {
+            Die();
+        }
+        _wasHit = true;
     }
 }
