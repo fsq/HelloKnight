@@ -165,7 +165,7 @@ public class NewPlayer : MonoBehaviour
             attackLastTime = _bulletAttackLastTime;
 
             obj = Instantiate(AttackBullet);
-            obj.GetComponent<Bullet>().Damage = BulletDamage;
+            obj.GetComponent<Bullet>().Init(gameObject, BulletDamage);
 
             // Bullet start pos
             var pos = obj.transform.position;
@@ -181,7 +181,7 @@ public class NewPlayer : MonoBehaviour
         {
             attackLastTime = _bladeAttackLastTime;
             obj = Instantiate<GameObject>(AttackBlade, transform);
-            obj.GetComponent<Blade>().Damage = BladeDamage;
+            obj.GetComponent<Blade>().Init(gameObject, BladeDamage);
 
             // Blade orientation
             var scale = obj.transform.localScale;
