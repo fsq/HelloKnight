@@ -1,15 +1,18 @@
 # HelloKnight
 
+WASD to move, mouse0/J and mouse1/K to attack.
 https://play.unity.com/mg/other/webgl-builds-222531
 
 ## TODO:
-1. More enemy types.
+- Player energy bar, and skills.
+- Pickable items.
+- More enemy types.
     - Flying/Ranged attack
-2. More enemy AI config
+- More enemy AI config
     - Patrolling 
     - Idle
     - Path finding
     - Line of sight
-3. Expand level
-4. Boss?
-5. Surprises :)
+- Expand level
+- Boss?
+- Surprises :)
