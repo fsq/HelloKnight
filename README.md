@@ -4,7 +4,8 @@ WASD to move, mouse0/J and mouse1/K to attack.
 https://play.unity.com/mg/other/webgl-builds-222531
 
 ## TODO:
-- Player energy bar, and skills.
+- HUDs, not enough energy etc.
+- Player skills.
 - Pickable items.
 - More enemy types.
     - Flying/Ranged attack

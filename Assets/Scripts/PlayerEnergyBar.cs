@@ -22,6 +22,7 @@ public class PlayerEnergyBar : MonoBehaviour
 
     void Update()
     {
+        if (_player == null) return;
         var size = _trans.sizeDelta;
         size[0] = _lengthPerEnergy * _player.MaxEnergy;
         _trans.sizeDelta = size;

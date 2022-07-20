@@ -21,6 +21,8 @@ public class PlayerHealthBar : MonoBehaviour
 
     void Update()
     {
+        if (_player == null) return;
+
         // Resize per max health
         var size = _trans.sizeDelta;
         size[0] = _lengthPerHealth * _player.MaxHealth;

@@ -11,17 +11,21 @@ public class Bullet : Attacks
     public override GameObject Attacker { get => _attacker; set => _attacker = value; }
 
     [SerializeField] private float _lifeSpan = 3;
+    public override float LifeSpan => _lifeSpan;
 
     [SerializeField] private float _lastingTime = 0.2f;
-    public override float LastingTime { get; }
+    public override float LastingTime => _lastingTime;
 
-    static public GameObject Create(GameObject attacker, Vector3 direction,
-                                    float damage, float speed)
+    [SerializeField] private float _recoverEnergy = 5f;
+
+    static public GameObject Create(GameObject attacker, AttackerDelegate del,
+                                    Vector3 direction, float damage, float speed)
     {
         var obj = Instantiate(GameManager.Instance.GetPrefab(Constants.kPrefabBullet));
         var bullet = obj.GetComponent<Bullet>();
         bullet.Attacker = attacker;
         bullet.Damage = damage;
+        bullet.Delegate = del;
 
         // Bullet start pos
         var pos = obj.transform.position;
@@ -36,18 +40,6 @@ public class Bullet : Attacks
         return obj;
     }
 
-    private void Start()
-    {
-        StartCoroutine(DestroyTimer(_lifeSpan));
-    }
-
-    public override void Hit(GameObject victim)
-    {
-        var monster = victim.gameObject.GetComponent<Monsters>();
-        monster.UnderAttack(this);
-        gameObject.GetComponent<Collider2D>().enabled = false;
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(Constants.kTagMonsters))
@@ -56,13 +48,12 @@ public class Bullet : Attacks
         }
         else if (other.CompareTag(Constants.kTagGround))
         {
-            Destroy(gameObject);
+            Destruct();
         }
     }
 
-    IEnumerator DestroyTimer(float lifeSpan)
+    public override void hitDone()
     {
-        yield return new WaitForSeconds(lifeSpan);
-        Destroy(gameObject);
+        // no-op, penetrate.
     }
 }

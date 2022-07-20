@@ -4,18 +4,30 @@ using UnityEngine;
 
 public abstract class Attacks : MonoBehaviour
 {
+    // Callback from attacker, trigger when hit happens
+    public delegate void AttackerDelegate(GameObject victim);
+    public AttackerDelegate Delegate;
+
     abstract public GameObject Attacker { get; set; }
 
     abstract public float Damage { get; set; }
 
-    // How long does attack anime last.
+    // How long does attacker anime last.
     abstract public float LastingTime { get; }
+
+    // How long does attack last (can Hit objects).
+    abstract public float LifeSpan { get; }
 
     // Maybe do something to the attacker. Healing, Charging, etc.
     // TODO: Refactor GameObject -> interface, hitable?
-    abstract public void Hit(GameObject victim);
+    virtual public void Hit(GameObject victim)
+    {
+        var monster = victim.gameObject.GetComponent<Monsters>();
+        monster.UnderAttack(this);
+        Delegate?.Invoke(victim);
+    }
 
-    // Callback by victim when attack is done.
+    // Callback for victim when attack is done.
     virtual public void hitDone()
     {
         Destroy(gameObject);
@@ -25,5 +37,16 @@ public abstract class Attacks : MonoBehaviour
     virtual public void Destruct()
     {
         Destroy(gameObject);
+    }
+
+    protected void Start()
+    {
+        StartCoroutine(DestructTimer());
+    }
+
+    virtual public IEnumerator DestructTimer()
+    {
+        yield return new WaitForSeconds(LifeSpan);
+        Destruct();
     }
 }

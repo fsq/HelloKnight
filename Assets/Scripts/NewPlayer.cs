@@ -27,8 +27,10 @@ public class NewPlayer : MonoBehaviour
     [SerializeField] private float _bulletSpeed = 20f;
     [SerializeField] private float _bladeDamage = 10;
     public float BladeDamage { get => _bladeDamage; set => _bladeDamage = value; }
+    [SerializeField] private float _bladeEnergyBoost = 5;
     [SerializeField] private float _bulletDamage = 15;
     public float BulletDamage { get => _bulletDamage; set => _bulletDamage = value; }
+    [SerializeField] private float _bulletEnergyCost = 15;
     [SerializeField] private float _hitRecoverTime = 0.5f;  // Invulnerable time after hit.
     [Space(10)]
 
@@ -74,6 +76,15 @@ public class NewPlayer : MonoBehaviour
     }
     #endregion
 
+    // Callback functions for attacks.
+    public Attacks.AttackerDelegate energyChangeDelegate(float change)
+    {
+        return delegate (GameObject victim)
+        {
+            Energy = Mathf.Clamp(Energy + change, 0, MaxEnergy);
+        };
+    }
+
 
     void Start()
     {
@@ -106,6 +117,18 @@ public class NewPlayer : MonoBehaviour
         }
     }
 
+    private bool CheckAttackResource(Constants.AttackType type)
+    {
+        switch (type)
+        {
+            case Constants.AttackType.Bullet:
+                {
+                    return Energy >= _bulletEnergyCost;
+                }
+            default: return true;
+        }
+    }
+
     private Constants.AttackType GetAttackType()
     {
         // Pressed attack or has buffered attack.
@@ -124,7 +147,7 @@ public class NewPlayer : MonoBehaviour
                         Constants.AttackType.Blade :
                         Constants.AttackType.Bullet;
             }
-            else
+            else // Check buffered attack
             {
                 attackType = _lastAttackType;
             }
@@ -132,6 +155,8 @@ public class NewPlayer : MonoBehaviour
             // Clear buffered attack.
             _lastAttackDown = Constants.kNever;
             _lastAttackType = Constants.AttackType.None;
+
+            if (!CheckAttackResource(attackType)) return Constants.AttackType.None;
 
             return attackType;
         }
@@ -155,19 +180,19 @@ public class NewPlayer : MonoBehaviour
         }
 
         GameObject obj = null;
-        bool shouldDestroy = true;
         float attackLastTime = 0;
         Vector3 direction = Vector3.right;
         if (_currentFlip) direction *= -1;
 
         if (type == Constants.AttackType.Bullet)
         {
-            shouldDestroy = false;
-            obj = Bullet.Create(gameObject, direction, BulletDamage, _bulletSpeed);
+            energyChangeDelegate(-_bulletEnergyCost).Invoke(null);
+            obj = Bullet.Create(gameObject, null, direction, BulletDamage, _bulletSpeed);
         }
         else
         {
-            obj = Blade.Create(gameObject, direction, BulletDamage);
+            Attacks.AttackerDelegate del = energyChangeDelegate(_bladeEnergyBoost);
+            obj = Blade.Create(gameObject, del, direction, BulletDamage);
         }
 
         Attacks attack = obj.GetComponent<Attacks>();
@@ -184,7 +209,6 @@ public class NewPlayer : MonoBehaviour
             // Wait for next frame.
             yield return null;
         }
-        if (shouldDestroy) attack.Destruct();
         _isAttacking = false;
         _earlyTerminateAttack = false;
         _lastAttackFinish = Time.time;
