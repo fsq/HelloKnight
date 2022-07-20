@@ -34,10 +34,13 @@ public class NewPlayer : MonoBehaviour
 
     [SerializeField] private float _maxHealth = 100;
     public float MaxHealth { get => _maxHealth; set => _maxHealth = value; }
+    [SerializeField] private float _maxEnergy = 30;
+    public float MaxEnergy { get => _maxEnergy; set => _maxEnergy = value; }
 
     [SerializeField] private float _health;
     public float Health { get => _health; private set => _health = value; }
-
+    [SerializeField] private float _energy;
+    public float Energy { get => _energy; private set => _energy = value; }
     #endregion
 
     public FrameInput FrameInput { get; private set; }

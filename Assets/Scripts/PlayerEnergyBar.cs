@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealthBar : MonoBehaviour
+public class PlayerEnergyBar : MonoBehaviour
 {
-    [SerializeField] private float _lengthPerHealth = 2;
+
+    [SerializeField] private float _lengthPerEnergy = 2;
     [SerializeField] private Slider _slider;
 
     private NewPlayer _player;
@@ -21,11 +22,10 @@ public class PlayerHealthBar : MonoBehaviour
 
     void Update()
     {
-        // Resize per max health
         var size = _trans.sizeDelta;
-        size[0] = _lengthPerHealth * _player.MaxHealth;
+        size[0] = _lengthPerEnergy * _player.MaxEnergy;
         _trans.sizeDelta = size;
-        _slider.maxValue = _player.MaxHealth;
-        _slider.value = _player.Health;
+        _slider.maxValue = _player.MaxEnergy;
+        _slider.value = _player.Energy;
     }
 }

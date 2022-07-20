@@ -8,12 +8,16 @@ public class GameManager : MonoBehaviour
     // Mono global instance.
     public static GameManager Instance;
 
+    private GameObject _player;
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(Instance);
+
+            _player = GameObject.FindObjectOfType<NewPlayer>().gameObject;
         }
         else
         {
@@ -29,5 +33,14 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Failed to fetch prefab: " + name);
         }
         return prefab;
+    }
+
+    public GameObject GetPlayerGameObj()
+    {
+        if (_player == null)
+        {
+            Debug.LogError("No player instance found!");
+        }
+        return _player;
     }
 }
