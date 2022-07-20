@@ -52,8 +52,6 @@ public class Zombie1 : Monsters
                 var me = transform.position;
                 var direction = Vector3.Normalize(me - source);
                 StartCoroutine(Backoff(direction, _backoffDistance, _backoffSpeed));
-                // Push backwards
-                _rb.AddForce(direction * 5, ForceMode2D.Impulse);
             }
             _wasHit = false;
         }

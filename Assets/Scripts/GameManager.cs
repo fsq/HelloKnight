@@ -16,8 +16,6 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(Instance);
-
-            _player = GameObject.FindObjectOfType<NewPlayer>().gameObject;
         }
         else
         {
@@ -39,7 +37,7 @@ public class GameManager : MonoBehaviour
     {
         if (_player == null)
         {
-            Debug.LogError("No player instance found!");
+            _player = GameObject.FindObjectOfType<NewPlayer>().gameObject;
         }
         return _player;
     }
