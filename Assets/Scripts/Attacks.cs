@@ -8,17 +8,21 @@ public abstract class Attacks : MonoBehaviour
 
     abstract public float Damage { get; set; }
 
+    // How long does attack anime last.
+    abstract public float LastingTime { get; }
+
     // Maybe do something to the attacker. Healing, Charging, etc.
     // TODO: Refactor GameObject -> interface, hitable?
     abstract public void Hit(GameObject victim);
 
-    virtual public void Init(GameObject attacker, float damage)
+    // Callback by victim when attack is done.
+    virtual public void hitDone()
     {
-        Attacker = attacker;
-        Damage = damage;
+        Destroy(gameObject);
     }
 
-    virtual public void hitDone()
+    // Explicitly destruct this attack.
+    virtual public void Destruct()
     {
         Destroy(gameObject);
     }

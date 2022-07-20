@@ -27,6 +27,11 @@ public class Constants
     #region Scenes
     public static string kSceneDefault = "Level";
     #endregion
+
+    #region Prefabs
+    public static string kPrefabBlade = "Blade";
+    public static string kPrefabBullet = "Bullet";
+    #endregion
 }
 
 public class FrameInput

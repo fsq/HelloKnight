@@ -44,6 +44,7 @@ public class Zombie1 : Monsters
             // Increase order in layer?
             Health -= _incomingAttack.Damage;
             if (Health <= 0) Die();
+            _incomingAttack.hitDone();
 
             if (!_backoffing)
             {
@@ -54,9 +55,7 @@ public class Zombie1 : Monsters
                 // Push backwards
                 _rb.AddForce(direction * 5, ForceMode2D.Impulse);
             }
-
             _wasHit = false;
-            _incomingAttack.hitDone();
         }
         // Moving towards target.
         if (Vector2.Distance(transform.position, _target.transform.position) > _trackingDistance)

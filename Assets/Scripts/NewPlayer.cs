@@ -22,8 +22,6 @@ public class NewPlayer : MonoBehaviour
     [Space(10)]
 
     [Header("Attack")]
-    [SerializeField] private float _bladeAttackLastTime = 0.2f;
-    [SerializeField] private float _bulletAttackLastTime = 0.2f;
     [SerializeField] private float _attackBuffer = 0.15f;
     [SerializeField] private float _attackCoolDown = 0.3f;
     [SerializeField] private float _bulletSpeed = 20f;
@@ -32,8 +30,6 @@ public class NewPlayer : MonoBehaviour
     [SerializeField] private float _bulletDamage = 15;
     public float BulletDamage { get => _bulletDamage; set => _bulletDamage = value; }
     [SerializeField] private float _hitRecoverTime = 0.5f;  // Invulnerable time after hit.
-    [SerializeField] private GameObject AttackBlade;
-    [SerializeField] private GameObject AttackBullet;
     [Space(10)]
 
     [SerializeField] private float _maxHealth = 100;
@@ -158,37 +154,21 @@ public class NewPlayer : MonoBehaviour
         GameObject obj = null;
         bool shouldDestroy = true;
         float attackLastTime = 0;
+        Vector3 direction = Vector3.right;
+        if (_currentFlip) direction *= -1;
 
         if (type == Constants.AttackType.Bullet)
         {
             shouldDestroy = false;
-            attackLastTime = _bulletAttackLastTime;
-
-            obj = Instantiate(AttackBullet);
-            obj.GetComponent<Bullet>().Init(gameObject, BulletDamage);
-
-            // Bullet start pos
-            var pos = obj.transform.position;
-            pos.x *= _currentFlip ? -1 : 1;
-            obj.transform.position = transform.position + pos;
-
-            // Bullet velocity
-            var v = obj.GetComponent<Rigidbody2D>().velocity;
-            v.x = _bulletSpeed * (_currentFlip ? -1 : 1);
-            obj.GetComponent<Rigidbody2D>().velocity = v;
+            obj = Bullet.Create(gameObject, direction, BulletDamage, _bulletSpeed);
         }
         else
         {
-            attackLastTime = _bladeAttackLastTime;
-            obj = Instantiate<GameObject>(AttackBlade, transform);
-            obj.GetComponent<Blade>().Init(gameObject, BladeDamage);
-
-            // Blade orientation
-            var scale = obj.transform.localScale;
-            scale.x *= _currentFlip ? -1 : 1; // Flip collider and renderer
-            obj.transform.localScale = scale;
+            obj = Blade.Create(gameObject, direction, BulletDamage);
         }
 
+        Attacks attack = obj.GetComponent<Attacks>();
+        attackLastTime = attack.LastingTime;
         _isAttacking = true;
 
         for (float timer = attackLastTime; timer >= 0; timer -= Time.deltaTime)
@@ -201,8 +181,7 @@ public class NewPlayer : MonoBehaviour
             // Wait for next frame.
             yield return null;
         }
-
-        if (shouldDestroy) Destroy(obj);
+        if (shouldDestroy) attack.Destruct();
         _isAttacking = false;
         _earlyTerminateAttack = false;
         _lastAttackFinish = Time.time;

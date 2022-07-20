@@ -6,18 +6,28 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     // Mono global instance.
-    public static GameManager mono;
+    public static GameManager Instance;
 
     private void Awake()
     {
-        if (mono == null)
+        if (Instance == null)
         {
-            mono = this;
-            DontDestroyOnLoad(mono);
+            Instance = this;
+            DontDestroyOnLoad(Instance);
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    public GameObject GetPrefab(string name)
+    {
+        var prefab = (GameObject)Resources.Load("Prefabs/" + name, typeof(GameObject));
+        if (prefab == null)
+        {
+            Debug.LogError("Failed to fetch prefab: " + name);
+        }
+        return prefab;
     }
 }
