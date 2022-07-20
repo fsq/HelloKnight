@@ -381,7 +381,6 @@ public class NewPlayer : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
         SceneManager.LoadScene(Constants.kSceneDefault);
     }
 
