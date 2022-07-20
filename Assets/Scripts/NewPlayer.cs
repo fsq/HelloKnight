@@ -203,6 +203,12 @@ public class NewPlayer : MonoBehaviour
         {
             if (_earlyTerminateAttack)
             {
+                if (type == Constants.AttackType.Blade)
+                {
+                    // Cancel melee attack immediately when flip.
+                    // TODO: move this to Blade class, to check Attacker.
+                    attack.Destruct();
+                }
                 _earlyTerminateAttack = false;
                 break;
             }
