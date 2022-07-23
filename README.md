@@ -1,6 +1,9 @@
 # HelloKnight
 
-WASD to move, mouse0/J and mouse1/K to attack.
+WASD to move
+mouse0/J: melee attack to collect 5 engery
+mouse1/K: use 15 energy to cast a bullet, which penetrates all monsters in path.
+
 https://play.unity.com/mg/other/webgl-builds-222531
 
 ## TODO:
