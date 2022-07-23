@@ -1,3 +1,7 @@
+/*
+*   DEPRECATED. See NewPlayer.cs instead.
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

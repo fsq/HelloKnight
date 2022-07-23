@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     {
         if (_player == null)
         {
-            _player = GameObject.FindObjectOfType<NewPlayer>().gameObject;
+            _player = GameObject.FindGameObjectWithTag(Constants.kTagPlayer).gameObject;
         }
         return _player;
     }
