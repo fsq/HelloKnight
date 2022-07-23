@@ -13,6 +13,12 @@ public class FSMPlayer : MonoBehaviour
 {
     [SerializeField] public StateParam sp;
 
+    [SerializeField] private GameObject PlayerFeet;
+    private bool IsInAir()
+    {
+        return PlayerFeet.GetComponent<PlayerFeet>().IsInAir();
+    }
+
     private Rigidbody2D _rb;
     private FSM _fsm;
     private FrameInput _frameInput;
@@ -25,18 +31,20 @@ public class FSMPlayer : MonoBehaviour
 
         sp.Obj = this.gameObject;
         sp.OnDie = this.OnDie;
+        sp.IsInAir = this.IsInAir;
 
-        var register_states = new List<Type> {
-                                typeof(HIdleState),
-                                typeof(VIdleState),
-                                typeof(DieState)};
-        _fsm = FSM.Create(sp, register_states);
+        _fsm = FSM.Create(sp);
     }
 
     private void Update()
     {
         GatherInput();
         _fsm.Update(_frameInput);
+    }
+
+    private void FixedUpdate()
+    {
+        _fsm.FixedUpdate(_frameInput);
     }
 
     private void GatherInput()

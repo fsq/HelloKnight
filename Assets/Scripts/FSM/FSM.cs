@@ -39,6 +39,12 @@ public class FSM
         _state.V.Update(input, _state);
     }
 
+    public void FixedUpdate(FrameInput input)
+    {
+        _state.H.FixedUpdate(input, _state);
+        _state.V.FixedUpdate(input, _state);
+    }
+
     static public State CreateState(Type stateType, StateParam stateParam)
     {
         var creator = stateType.GetMethod("Create", BindingFlags.Static |
@@ -46,26 +52,14 @@ public class FSM
         return (State)creator.Invoke(null, new object[] { stateParam });
     }
 
-    static public FSM Create(StateParam stateParam, List<Type> types)
+    static public FSM Create(StateParam stateParam)
     {
         var fsm = new FSM(stateParam);
-        foreach (var type in types)
-        {
-            fsm.AppendState(type);
-            Debug.Log("FSM registered state: " + type.Name);
-        }
 
-        fsm._state.H = fsm._registry[nameof(HIdleState)];
-        fsm._state.V = fsm._registry[nameof(VIdleState)];
+        fsm._state.H = FSM.CreateState(typeof(HIdleState), stateParam);
+        fsm._state.V = FSM.CreateState(typeof(VIdleState), stateParam);
 
         return fsm;
-    }
-
-    public State AppendState(Type stateType)
-    {
-        var state = CreateState(stateType, StateParam);
-        _registry.Add(stateType.Name, state);
-        return state;
     }
 
     private FSM(StateParam stateParam)
@@ -73,6 +67,5 @@ public class FSM
         StateParam = stateParam;
     }
 
-    Dictionary<string, State> _registry = new Dictionary<string, State>();
     private FSMState _state = new FSMState();
 }
