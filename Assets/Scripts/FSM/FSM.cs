@@ -8,6 +8,7 @@ public class FSMState
 {
     public State H;  // Horizontal movement
     public State V;  // Vertical movement
+    public State A;  // Actions, attack, etc.
 }
 
 public class FSM
@@ -30,6 +31,12 @@ public class FSM
             _state.V = next_v;
             next_v.Enter();
         }
+        var next_a = _state.A.HandleInput(input);
+        if (next_a != null)
+        {
+            _state.V = next_a;
+            next_a.Enter();
+        }
     }
 
     public void Update(FrameInput input)
@@ -37,12 +44,14 @@ public class FSM
         HandleInput(input);
         _state.H.Update(input, _state);
         _state.V.Update(input, _state);
+        _state.A.Update(input, _state);
     }
 
     public void FixedUpdate(FrameInput input)
     {
         _state.H.FixedUpdate(input, _state);
         _state.V.FixedUpdate(input, _state);
+        _state.A.FixedUpdate(input, _state);
     }
 
     static public State CreateState(Type stateType, StateParam stateParam)
@@ -58,6 +67,7 @@ public class FSM
 
         fsm._state.H = FSM.CreateState(typeof(HIdleState), stateParam);
         fsm._state.V = FSM.CreateState(typeof(VIdleState), stateParam);
+        fsm._state.A = FSM.CreateState(typeof(AIdleState), stateParam);
 
         return fsm;
     }

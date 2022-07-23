@@ -4,10 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class StateParam
 {
-    [System.NonSerialized] public GameObject Obj;
+    [NonSerialized] public GameObject Obj;
 
     // Check termination of FSM
     public delegate bool DieCheckDelegate();
@@ -28,7 +28,7 @@ public class StateParam
     [SerializeField] public float JumpForce = 20f;
     [SerializeField] public float DefaultGScale = 4.5f;
     [SerializeField] public float FallingGScale = 5.5f;
-    [SerializeField] public bool HasBufferedJump;
+    [NonSerialized] public bool HasBufferedJump;
     [SerializeField] public bool PrevFlip = false;      // Flipped in previous frame?
     [SerializeField] public bool CurrentFlip = false;   // Flipped in this frame?
     public delegate bool IsInAirDelegate();
@@ -289,6 +289,22 @@ public class VIdleState : IdleState
 
 
     private VIdleState(StateParam stateParam) : base(stateParam) { }
+}
+
+public class AIdleState : IdleState
+{
+    static public AIdleState Create(StateParam stateParam)
+    {
+        return new AIdleState(stateParam);
+    }
+
+    public override State HandleInput(FrameInput input)
+    {
+        return null;
+    }
+
+    private AIdleState(StateParam stateParam) : base(stateParam) { }
+
 }
 
 public class FallingState : State
