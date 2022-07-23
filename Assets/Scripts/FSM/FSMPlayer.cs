@@ -27,9 +27,9 @@ public class FSMPlayer : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _rb.sleepMode = RigidbodySleepMode2D.NeverSleep;
-        if (this.gameObject == null) Debug.Log("WF");
 
         sp.Obj = this.gameObject;
+        sp.DieCheck = this.DieCheck;
         sp.OnDie = this.OnDie;
         sp.IsInAir = this.IsInAir;
 
@@ -58,6 +58,12 @@ public class FSMPlayer : MonoBehaviour
             BladeDown = Input.GetButtonDown(Constants.kBladeAttack),
             BulletDown = Input.GetButtonDown(Constants.kBulletAttack)
         };
+    }
+
+    private bool DieCheck(StateParam sp)
+    {
+        //  TODO: parameterize
+        return sp.Obj.transform.position.y < -30 || sp.Health <= 0;
     }
 
     private void OnDie()

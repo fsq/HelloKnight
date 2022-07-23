@@ -334,7 +334,6 @@ public class NewPlayer : MonoBehaviour
                     (Time.time - _lastGrounded <= _coyoteThreshold))
             {
                 // Prevent using coyote twice;
-                Debug.Log("Coyote triggered: " + _lastGrounded + " " + Time.time);
                 _coyoteUsed = true;
                 return true;
             }

@@ -10,7 +10,7 @@ public class StateParam
     [NonSerialized] public GameObject Obj;
 
     // Check termination of FSM
-    public delegate bool DieCheckDelegate();
+    public delegate bool DieCheckDelegate(StateParam sp);
     public delegate void DieDelegate();
 
     public DieCheckDelegate DieCheck;
@@ -55,10 +55,17 @@ abstract public class State
     protected GameObject _obj;
     protected IStateful _client;
     protected StateParam _sp;
-    protected State(StateParam stateParam)
+    protected State(StateParam sp)
     {
-        _sp = stateParam;
-        _obj = stateParam.Obj;
+        _sp = sp;
+        _obj = sp.Obj;
         _client = _obj.GetComponent<IStateful>();
     }
+}
+
+abstract public class IdleState : State
+{
+    public override void Update(FrameInput input, FSMState context) { }
+
+    protected IdleState(StateParam sp) : base(sp) { }
 }

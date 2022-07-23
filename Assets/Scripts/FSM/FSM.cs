@@ -31,11 +31,20 @@ public class FSM
             _state.V = next_v;
             next_v.Enter();
         }
-        var next_a = _state.A.HandleInput(input);
-        if (next_a != null)
+        // Special case. An object can Din during any states.
+        if (StateParam.DieCheck(StateParam) && _state.A.GetType() != typeof(DieState))
         {
-            _state.V = next_a;
-            next_a.Enter();
+            _state.A = FSM.CreateState(typeof(DieState), StateParam);
+            _state.A.Enter();
+        }
+        else
+        {
+            var next_a = _state.A.HandleInput(input);
+            if (next_a != null)
+            {
+                _state.A = next_a;
+                next_a.Enter();
+            }
         }
     }
 

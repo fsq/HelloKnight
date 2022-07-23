@@ -154,13 +154,6 @@ public class JumpingState : State
     }
 }
 
-abstract public class IdleState : State
-{
-    public override void Update(FrameInput input, FSMState context) { }
-
-    protected IdleState(StateParam stateParam) : base(stateParam) { }
-}
-
 // Idle state on horizontal axis
 public class HIdleState : IdleState
 {
