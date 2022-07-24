@@ -16,8 +16,6 @@ public class Bullet : Attacks
     [SerializeField] private float _actionDuration = 0.2f;
     public override float ActionDuration => _actionDuration;
 
-    [SerializeField] private float _recoverEnergy = 5f;
-
     static public ResourceGauge GetCostByAttackerTag(string tag)
     {
         var cost = new ResourceGauge();

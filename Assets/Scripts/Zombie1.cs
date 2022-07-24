@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Zombie1 : Monsters
 {
-    [SerializeField] private float _maxHealth = 100;
+    [SerializeField] private float _maxHealth = 80;
     public override float MaxHealth { get => _maxHealth; set => _maxHealth = value; }
 
-    [SerializeField] private float _health = 100;
+    [SerializeField] private float _health = 80;
     public override float Health { get => _health; set => _health = value; }
 
-    [SerializeField] private float _damage = 20;
+    [SerializeField] private float _damage = 10;
     public override float Damage { get => _damage; set => _damage = value; }
 
     [SerializeField] private float _moveSpeed = 3f;
-    [SerializeField] private float _trackingDistance = 1.2f;
-    [SerializeField] private float _backoffDistance = 0.5f;
+    [SerializeField] private float _trackingDistance = 0f;
+    [SerializeField] private float _backoffDistance = 1f;
     [SerializeField] private float _backoffSpeed = 12f;
 
     // Target for attacking, moving, etc.
@@ -38,6 +38,8 @@ public class Zombie1 : Monsters
             _target = GameObject.FindGameObjectWithTag(Constants.kTagPlayer);
             if (_target == null) return;
         }
+
+        GetComponent<SpriteRenderer>().flipX = transform.position.x > _target.transform.position.x;
 
         if (_wasHit)
         {
