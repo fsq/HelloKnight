@@ -37,6 +37,7 @@ public class StateParam
 
     #region Attack
     [SerializeField] public float BladeDamage = 10;
+    [SerializeField] public float BulletDamage = 15;
     [SerializeField] public float AttackInputBufferDuration = 0.15f;
     [NonSerialized] public Dictionary<Constants.AttackType, float> AttackCoolDown;
     #endregion

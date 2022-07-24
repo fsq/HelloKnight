@@ -16,6 +16,7 @@ public class FSMPlayer : MonoBehaviour
     [SerializeField] private float _bladeDamage = 10;
 
     [SerializeField] private float _bulletCoolDown = 0.3f;
+    [SerializeField] private float _bulletDamage = 15;
 
     [SerializeField] private GameObject PlayerFeet;
     private bool IsInAir()
@@ -45,6 +46,7 @@ public class FSMPlayer : MonoBehaviour
         sp.IsInAir = this.IsInAir;
         sp.AttackCoolDown = CDs;
         sp.BladeDamage = _bladeDamage;
+        sp.BulletDamage = _bulletDamage;
 
         _fsm = FSM.Create(sp);
     }

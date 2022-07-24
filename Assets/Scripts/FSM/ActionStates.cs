@@ -84,6 +84,8 @@ public class AIdleState : ActionState
                 Exit();
                 return FSM.CreateState(typeof(BladeAttackState), _sp);
             case Constants.AttackType.Bullet:
+                Exit();
+                return FSM.CreateState(typeof(BulletAttackState), _sp);
             default: return null;
         }
     }
@@ -104,6 +106,58 @@ public class AIdleState : ActionState
 
     private AIdleState(StateParam stateParam) : base(stateParam) { }
 
+}
+
+class BulletAttackState : ActionState
+{
+    private GameObject _attackObj;
+    private Attacks _attack;
+    private float _timer;
+    private float _bulletSpeed = 20f;
+    private bool _readyToExit;
+
+    static public BulletAttackState Create(StateParam statePram)
+    {
+        return new BulletAttackState(statePram);
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+        // TODO: Energy change
+
+        Vector3 direction = Vector3.right;
+        if (_sp.CurrentFlip) direction *= -1;
+        _attackObj = Bullet.Create(_obj, null, direction, _sp.BulletDamage, _bulletSpeed);
+        _attack = _attackObj.GetComponent<Attacks>();
+        _timer = _attack.ActionDuration;
+    }
+
+    public override State HandleInput(FrameInput input)
+    {
+        base.HandleInput(input);
+
+        if (_readyToExit)
+        {
+            Exit();
+            return FSM.CreateState(typeof(AIdleState), _sp);
+        }
+        return null;
+    }
+
+    public override void Update(FrameInput input, FSMState context)
+    {
+        _timer -= Time.deltaTime;
+        if (_timer <= 0) _readyToExit = true;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _lastAttackDoneTime[Constants.AttackType.Blade] = Time.time;
+    }
+
+    private BulletAttackState(StateParam stateParam) : base(stateParam) { }
 }
 
 class BladeAttackState : ActionState
