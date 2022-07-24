@@ -21,6 +21,11 @@ public class Blade : Attacks
     // disable collider after the first Hit().
     private bool _isActive = true;
 
+    static public ResourceGauge GetCostByAttackerTag(string tag)
+    {
+        return new ResourceGauge();
+    }
+
     static public GameObject Create(GameObject attacker, AttackerDelegate del,
                                     Vector3 direction, float damage)
     {

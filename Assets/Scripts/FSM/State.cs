@@ -5,6 +5,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
+public class ResourceGauge
+{
+    [SerializeField] public float MaxHealth;
+    [SerializeField] public float Health;
+    [SerializeField] public float MaxEnergy;
+    [SerializeField] public float Energy;
+
+    // Check if a>=b (ignoring Max<type> fields)
+    static public bool GE(ResourceGauge a, ResourceGauge b)
+    {
+        return a.Health >= b.Health && a.Energy >= b.Energy;
+    }
+
+    // a-=b
+    static public void UseResource(ResourceGauge a, ResourceGauge b)
+    {
+        a.Health -= b.Health;
+        a.Energy -= b.Energy;
+    }
+}
+
+[Serializable]
 public class StateParam
 {
     [NonSerialized] public GameObject Obj;
@@ -17,10 +39,7 @@ public class StateParam
     public DieDelegate OnDie;
 
     #region Resourecs
-    [SerializeField] public float MaxHealth = 100;
-    [SerializeField] public float Health = 100;
-    [SerializeField] public float MaxEnergy = 30;
-    [SerializeField] public float Energy = 0;
+    [SerializeField] public ResourceGauge resource;
     #endregion
 
     #region Movement
@@ -37,6 +56,7 @@ public class StateParam
 
     #region Attack
     [SerializeField] public float BladeDamage = 10;
+    [SerializeField] public float BladeEnergyBoost = 5;
     [SerializeField] public float BulletDamage = 15;
     [SerializeField] public float AttackInputBufferDuration = 0.15f;
     [NonSerialized] public Dictionary<Constants.AttackType, float> AttackCoolDown;

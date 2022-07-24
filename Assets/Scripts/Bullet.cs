@@ -18,6 +18,16 @@ public class Bullet : Attacks
 
     [SerializeField] private float _recoverEnergy = 5f;
 
+    static public ResourceGauge GetCostByAttackerTag(string tag)
+    {
+        var cost = new ResourceGauge();
+        if (tag == Constants.kTagPlayer)
+        {
+            cost.Energy = 15;
+        }
+        return cost;
+    }
+
     static public GameObject Create(GameObject attacker, AttackerDelegate del,
                                     Vector3 direction, float damage, float speed)
     {

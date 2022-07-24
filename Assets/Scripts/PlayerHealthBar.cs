@@ -8,7 +8,7 @@ public class PlayerHealthBar : MonoBehaviour
     [SerializeField] private float _lengthPerHealth = 2;
     [SerializeField] private Slider _slider;
 
-    private NewPlayer _player;
+    private FSMPlayer _player;
 
     private RectTransform _trans;
 
@@ -16,7 +16,7 @@ public class PlayerHealthBar : MonoBehaviour
     {
         _trans = GetComponent<RectTransform>();
         _slider = GetComponent<Slider>();
-        _player = GameManager.Instance.GetPlayerGameObj().GetComponent<NewPlayer>();
+        _player = GameManager.Instance.GetPlayerGameObj().GetComponent<FSMPlayer>();
     }
 
     void Update()

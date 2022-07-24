@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,24 @@ abstract public class ActionState : IdleState
         return CD;
     }
 
+    protected ResourceGauge GetResourceCostFromAttackType(Constants.AttackType type)
+    {
+        switch (type)
+        {
+            case Constants.AttackType.Blade:
+                return (ResourceGauge)typeof(Blade)
+                            .GetMethod(nameof(Blade.GetCostByAttackerTag))
+                            .Invoke(null, new object[] { _obj.tag });
+            case Constants.AttackType.Bullet:
+                return (ResourceGauge)typeof(Bullet)
+                            .GetMethod(nameof(Bullet.GetCostByAttackerTag))
+                            .Invoke(null, new object[] { _obj.tag });
+            default:
+                Debug.LogError("Can't get cost for AttackType: " + type);
+                return new ResourceGauge();
+        }
+    }
+
     // Shared across all Action states.
     protected float _lastAttackDownTime = Constants.kNever;
     protected Constants.AttackType _lastAttackDownType = Constants.AttackType.None;
@@ -69,10 +88,14 @@ public class AIdleState : ActionState
             return Constants.AttackType.None;
         }
 
+        // Check has enough resource to cast the attack.
+        var cost = GetResourceCostFromAttackType(_lastAttackDownType);
+        if (!ResourceGauge.GE(_sp.resource, cost))
+            return Constants.AttackType.None;
+
         // Clear buffered attack.
         _lastAttackDownTime = Constants.kNever;
 
-        // TODO: Check resource
         return _lastAttackDownType;
     }
 
@@ -124,12 +147,13 @@ class BulletAttackState : ActionState
     public override void Enter()
     {
         base.Enter();
-        // TODO: Energy change
 
         Vector3 direction = Vector3.right;
         if (_sp.CurrentFlip) direction *= -1;
         _attackObj = Bullet.Create(_obj, null, direction, _sp.BulletDamage, _bulletSpeed);
-        _attack = _attackObj.GetComponent<Attacks>();
+        _attack = _attackObj.GetComponent<Bullet>();
+        ResourceGauge.UseResource(_sp.resource,
+                    GetResourceCostFromAttackType(Constants.AttackType.Bullet));
         _timer = _attack.ActionDuration;
     }
 
@@ -176,12 +200,20 @@ class BladeAttackState : ActionState
     public override void Enter()
     {
         base.Enter();
-        // TODO: Energy change
 
         Vector3 direction = Vector3.right;
         if (_sp.CurrentFlip) direction *= -1;
-        _attackObj = Blade.Create(_obj, null, direction, _sp.BladeDamage);
+
+        Attacks.AttackerDelegate onHit = delegate (GameObject victim)
+        {
+            _sp.resource.Energy = Mathf.Clamp(
+                                    _sp.resource.Energy + _sp.BladeEnergyBoost,
+                                    0, _sp.resource.MaxEnergy);
+        };
+        _attackObj = Blade.Create(_obj, onHit, direction, _sp.BladeDamage);
         _attack = _attackObj.GetComponent<Attacks>();
+        ResourceGauge.UseResource(_sp.resource,
+                    GetResourceCostFromAttackType(Constants.AttackType.Blade));
         _timer = _attack.ActionDuration;
     }
 

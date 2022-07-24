@@ -9,7 +9,7 @@ public class PlayerEnergyBar : MonoBehaviour
     [SerializeField] private float _lengthPerEnergy = 2;
     [SerializeField] private Slider _slider;
 
-    private NewPlayer _player;
+    private FSMPlayer _player;
 
     private RectTransform _trans;
 
@@ -17,7 +17,7 @@ public class PlayerEnergyBar : MonoBehaviour
     {
         _trans = GetComponent<RectTransform>();
         _slider = GetComponent<Slider>();
-        _player = GameManager.Instance.GetPlayerGameObj().GetComponent<NewPlayer>();
+        _player = GameManager.Instance.GetPlayerGameObj().GetComponent<FSMPlayer>();
     }
 
     void Update()
