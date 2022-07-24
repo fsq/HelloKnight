@@ -14,16 +14,21 @@ public class HMoveState : State
     {
         _sp.PrevFlip = _sp.CurrentFlip;
         if (input.X == 0)
+        {
+            Exit();
             return FSM.CreateState(typeof(HIdleState), _sp);
+        }
         else
+        {
+            _sp.CurrentFlip = input.X < 0;
             return null;
+        }
     }
 
     public override void Update(FrameInput input, FSMState context)
     {
         _obj.transform.position += Mathf.Sign(input.X) * Vector3.right *
                     Time.deltaTime * _sp.HorizontalSpeed;
-        _sp.CurrentFlip = input.X < 0;
         if (_sp.CurrentFlip ^ _sp.PrevFlip)
         {
             _obj.GetComponent<SpriteRenderer>().flipX = _sp.CurrentFlip;
@@ -167,6 +172,7 @@ public class HIdleState : IdleState
     {
         if (input.X != 0)
         {
+            Exit();
             return FSM.CreateState(typeof(HMoveState), _sp);
         }
         else
@@ -201,11 +207,13 @@ public class VIdleState : IdleState
             // far from platform and press jump.
             if (!inAir || Time.time - _lastGrounded <= _coyoteThreshold)
             {
+                Exit();
                 return FSM.CreateState(typeof(JumpingState), _sp);
             }
         }
         if (inAir)
         {
+            Exit();
             return FSM.CreateState(typeof(FallingState), _sp);
         }
         return null;
@@ -229,6 +237,7 @@ public class FallingState : State
     {
         if (!_sp.IsInAir())
         {
+            Exit();
             return FSM.CreateState(typeof(VIdleState), _sp);
         }
         else

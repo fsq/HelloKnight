@@ -31,7 +31,7 @@ public class FSM
             _state.V = next_v;
             next_v.Enter();
         }
-        // Special case. An object can Din during any states.
+        // Special case. An object can Die during any states.
         if (StateParam.DieCheck(StateParam) && _state.A.GetType() != typeof(DieState))
         {
             _state.A = FSM.CreateState(typeof(DieState), StateParam);

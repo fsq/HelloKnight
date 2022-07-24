@@ -13,7 +13,7 @@ public abstract class Attacks : MonoBehaviour
     abstract public float Damage { get; set; }
 
     // How long does attacker anime last.
-    abstract public float LastingTime { get; }
+    abstract public float ActionDuration { get; }
 
     // How long does attack last (can Hit objects).
     abstract public float LifeSpan { get; }
@@ -31,6 +31,16 @@ public abstract class Attacks : MonoBehaviour
     virtual public void hitDone()
     {
         Destroy(gameObject);
+    }
+
+    // Preferred version to instance.Destruct(). Attacks have internal timer,
+    // and can already become null when caller trying to destruct them.
+    static public void Destruct(Attacks attack)
+    {
+        if (attack != null)
+        {
+            attack.Destruct();
+        }
     }
 
     // Explicitly destruct this attack.

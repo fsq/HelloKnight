@@ -196,7 +196,7 @@ public class NewPlayer : MonoBehaviour
         }
 
         Attacks attack = obj.GetComponent<Attacks>();
-        attackLastTime = attack.LastingTime;
+        attackLastTime = attack.ActionDuration;
         _isAttacking = true;
 
         for (float timer = attackLastTime; timer >= 0; timer -= Time.deltaTime)

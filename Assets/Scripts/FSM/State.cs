@@ -34,6 +34,12 @@ public class StateParam
     public delegate bool IsInAirDelegate();
     public IsInAirDelegate IsInAir;
     #endregion
+
+    #region Attack
+    [SerializeField] public float BladeDamage = 10;
+    [SerializeField] public float AttackInputBufferDuration = 0.15f;
+    [NonSerialized] public Dictionary<Constants.AttackType, float> AttackCoolDown;
+    #endregion
 }
 
 abstract public class State

@@ -13,8 +13,8 @@ public class Bullet : Attacks
     [SerializeField] private float _lifeSpan = 3;
     public override float LifeSpan => _lifeSpan;
 
-    [SerializeField] private float _lastingTime = 0.2f;
-    public override float LastingTime => _lastingTime;
+    [SerializeField] private float _actionDuration = 0.2f;
+    public override float ActionDuration => _actionDuration;
 
     [SerializeField] private float _recoverEnergy = 5f;
 

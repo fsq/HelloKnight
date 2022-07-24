@@ -13,8 +13,8 @@ public class Blade : Attacks
     [SerializeField] private float _lifeSpan = 0.2f;
     public override float LifeSpan => _lifeSpan;
 
-    [SerializeField] private float _lastingTime = 0.2f;
-    public override float LastingTime => _lastingTime;
+    [SerializeField] private float _actionDuration = 0.2f;
+    public override float ActionDuration => _actionDuration;
 
     // Can't Hit when false.
     // OnTriggerEnter2D still triggers for all entered objects even if we 
