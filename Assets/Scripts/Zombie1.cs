@@ -15,6 +15,7 @@ public class Zombie1 : Monsters
 
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private float _trackingDistance = 0f;
+    [SerializeField] private float _triggerDistance = 20f; // Start tracking when target in range.
     [SerializeField] private float _backoffDistance = 1f;
     [SerializeField] private float _backoffSpeed = 12f;
 
@@ -58,7 +59,12 @@ public class Zombie1 : Monsters
             _wasHit = false;
         }
         // Moving towards target.
-        if (Vector2.Distance(transform.position, _target.transform.position) > _trackingDistance)
+        var dist = Vector2.Distance(transform.position, _target.transform.position);
+        if (dist > _triggerDistance)
+        {
+            // Idle
+        }
+        else if (dist > _trackingDistance)
         {
             transform.position = Vector2.MoveTowards(transform.position,
                                     _target.transform.position, _moveSpeed * Time.deltaTime);
