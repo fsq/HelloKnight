@@ -75,10 +75,11 @@ public class Zombie1 : Monsters
         }
     }
 
-    public override void UnderAttack(Attacks attack)
+    public override float UnderAttack(Attacks attack)
     {
         _incomingAttack = attack;
         _wasHit = true;
+        return attack.Damage;
     }
 
     IEnumerator Backoff(Vector3 direction, float distance, float speed)

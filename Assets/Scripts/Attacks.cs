@@ -23,8 +23,9 @@ public abstract class Attacks : MonoBehaviour
     virtual public void Hit(GameObject victim)
     {
         var monster = victim.gameObject.GetComponent<Monsters>();
-        monster.UnderAttack(this);
+        float dealt = monster.UnderAttack(this);
         Delegate?.Invoke(victim);
+        DamageDisplay.Display(victim.transform, dealt);
     }
 
     // Callback for victim when attack is done.

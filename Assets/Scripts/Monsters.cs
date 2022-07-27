@@ -10,7 +10,8 @@ public abstract class Monsters : MonoBehaviour
 
     abstract public float Damage { get; set; }
 
-    abstract public void UnderAttack(Attacks attack);
+    // Return the actual damage dealt.
+    abstract public float UnderAttack(Attacks attack);
 
     virtual protected void Die() => Destroy(gameObject);
 }

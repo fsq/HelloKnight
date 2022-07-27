@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     private GameObject _player;
+    private GameObject _canvas;
 
     private void Awake()
     {
@@ -40,5 +41,14 @@ public class GameManager : MonoBehaviour
             _player = GameObject.FindGameObjectWithTag(Constants.kTagPlayer).gameObject;
         }
         return _player;
+    }
+
+    public GameObject GetCanvas()
+    {
+        if (_canvas == null)
+        {
+            _canvas = GameObject.FindObjectOfType<Canvas>().gameObject;
+        }
+        return _canvas;
     }
 }
