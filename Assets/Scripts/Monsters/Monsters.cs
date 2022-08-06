@@ -27,14 +27,17 @@ public abstract class Monsters : MonoBehaviour, IHitable
     [SerializeField] protected float _backoffSpeed = 12f;
     protected bool _backoffing;
 
+    // Target for attacking, moving, etc.
+    [SerializeField] protected GameObject _target;
+
     protected void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    protected void Update()
+    virtual public void Update()
     {
-        GetComponent<SpriteRenderer>().flipX = _rb.velocity.x < 0;
+        GetComponent<SpriteRenderer>().flipX = _target.transform.position.x < transform.position.x;
         HandleDamage();
     }
 

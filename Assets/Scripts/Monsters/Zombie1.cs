@@ -17,9 +17,6 @@ public class Zombie1 : Monsters
     [SerializeField] private float _trackingDistance = 0f;
     [SerializeField] private float _triggerDistance = 20f; // Start tracking when target in range.
 
-    // Target for attacking, moving, etc.
-    [SerializeField] private GameObject _target;
-
     void Start()
     {
         if (_target == null)
@@ -28,7 +25,7 @@ public class Zombie1 : Monsters
         }
     }
 
-    new void Update()
+    public override void Update()
     {
         base.Update();
 
