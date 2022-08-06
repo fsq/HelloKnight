@@ -9,7 +9,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FSMPlayer : MonoBehaviour
+public class FSMPlayer : MonoBehaviour, IHitable
 {
     [SerializeField] public StateParam sp;
     [SerializeField] private float _bladeCoolDown = 0.3f;
@@ -110,9 +110,15 @@ public class FSMPlayer : MonoBehaviour
         }
     }
 
-    private void UnderAttack(float damage)
+    public float UnderAttack(Attacks attack)
+    {
+        return UnderAttack(attack.Damage);
+    }
+
+    private float UnderAttack(float damage)
     {
         sp.resource.Health -= damage;
+        return damage;
         // Shock time
     }
 

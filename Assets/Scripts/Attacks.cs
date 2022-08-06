@@ -19,11 +19,10 @@ public abstract class Attacks : MonoBehaviour
     abstract public float LifeSpan { get; }
 
     // Maybe do something to the attacker. Healing, Charging, etc.
-    // TODO: Refactor GameObject -> interface, hitable?
     virtual public void Hit(GameObject victim)
     {
-        var monster = victim.gameObject.GetComponent<Monsters>();
-        float dealt = monster.UnderAttack(this);
+        var hitable = victim.gameObject.GetComponent<IHitable>();
+        float dealt = hitable.UnderAttack(this);
         Delegate?.Invoke(victim);
         DamageDisplay.Display(victim.transform, dealt);
     }

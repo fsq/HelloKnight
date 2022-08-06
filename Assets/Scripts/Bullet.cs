@@ -16,6 +16,8 @@ public class Bullet : Attacks
     [SerializeField] private float _actionDuration = 0.2f;
     public override float ActionDuration => _actionDuration;
 
+    private string _targetTag;
+
     static public ResourceGauge GetCostByAttackerTag(string tag)
     {
         var cost = new ResourceGauge();
@@ -26,14 +28,35 @@ public class Bullet : Attacks
         return cost;
     }
 
+    // Use Player as target tag.
+    static public GameObject CreateForMonster(GameObject attacker, AttackerDelegate del,
+                                    Vector3 direction, float damage)
+    {
+        var bullet = Create(attacker, del, direction, damage,
+                        Constants.kDefaultBulletSpeed, Constants.kTagPlayer);
+        bullet.tag = Constants.kTagMonsters;
+        bullet.layer = LayerMask.NameToLayer(Constants.kLayerMonsters);
+        return bullet;
+    }
+
+    // Use Monsters as target tag.
     static public GameObject Create(GameObject attacker, AttackerDelegate del,
-                                    Vector3 direction, float damage, float speed)
+                                        Vector3 direction, float damage, float speed)
+    {
+        return Create(attacker, del, direction, damage,
+                        speed, Constants.kTagMonsters);
+    }
+
+    static public GameObject Create(GameObject attacker, AttackerDelegate del,
+                                    Vector3 direction, float damage, float speed,
+                                    string targetTag)
     {
         var obj = Instantiate(GameManager.Instance.GetPrefab(Constants.kPrefabBullet));
         var bullet = obj.GetComponent<Bullet>();
         bullet.Attacker = attacker;
         bullet.Damage = damage;
         bullet.Delegate = del;
+        bullet._targetTag = targetTag;
 
         // Bullet start pos
         var pos = obj.transform.position;
@@ -42,7 +65,7 @@ public class Bullet : Attacks
 
         // Bullet velocity
         var v = obj.GetComponent<Rigidbody2D>().velocity;
-        v.x = speed * Mathf.Sign(direction.x);
+        v = direction.normalized * speed;
         obj.GetComponent<Rigidbody2D>().velocity = v;
 
         return obj;
@@ -50,7 +73,7 @@ public class Bullet : Attacks
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(Constants.kTagMonsters))
+        if (other.CompareTag(_targetTag))
         {
             Hit(other.gameObject);
         }

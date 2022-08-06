@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Monsters : MonoBehaviour
+public abstract class Monsters : MonoBehaviour, IHitable
 {
     abstract public float Health { get; set; }
 
@@ -10,7 +10,6 @@ public abstract class Monsters : MonoBehaviour
 
     abstract public float Damage { get; set; }
 
-    // Return the actual damage dealt.
     virtual public float UnderAttack(Attacks attack)
     {
         _incomingAttack = attack;

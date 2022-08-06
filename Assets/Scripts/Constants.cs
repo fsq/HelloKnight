@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Constants
+static public class Constants
 {
     #region Input
     public static string kHorizontal = "Horizontal";
     public static string kJump = "Jump";
+    public static string kBladeAttack = "Fire1";
+    public static string kBulletAttack = "Fire2";
     #endregion
 
     #region Attacks
     public enum AttackType { None, Blade, Bullet }
-    public static string kBladeAttack = "Fire1";
-    public static string kBulletAttack = "Fire2";
+    public static float kDefaultBulletSpeed = 20f;
     #endregion
 
     public static float kNever = -100;
@@ -22,6 +23,10 @@ public class Constants
     public static string kTagGround = "Ground";
     public static string kTagPlayerAttack = "PlayerAttack";
     public static string kTagMonsters = "Monsters";
+    #endregion
+
+    #region Layers
+    public static string kLayerMonsters = "Monsters";
     #endregion
 
     #region Scenes
