@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class Blade : Attacks
 {
-    [SerializeField] private float _damage;
-    public override float Damage { get => _damage; set => _damage = value; }
-
-    [SerializeField] private GameObject _attacker;
-    public override GameObject Attacker { get => _attacker; set => _attacker = value; }
-
-    [SerializeField] private float _lifeSpan = 0.2f;
-    public override float LifeSpan => _lifeSpan;
-
-    [SerializeField] private float _actionDuration = 0.2f;
-    public override float ActionDuration => _actionDuration;
-
     // Can't Hit when false.
     // OnTriggerEnter2D still triggers for all entered objects even if we 
     // disable collider after the first Hit().
@@ -31,7 +19,17 @@ public class Blade : Attacks
     {
         var obj = Instantiate(GameManager.Instance.GetPrefab(Constants.kPrefabBlade),
                                 attacker.transform);
+        if (obj == null)
+        {
+            Debug.LogError("No prefab found: " + Constants.kPrefabBlade);
+            return null;
+        }
         var blade = obj.GetComponent<Blade>();
+        if (blade == null)
+        {
+            Debug.LogError("No Blade component found in prefab: " + Constants.kPrefabBlade);
+            return null;
+        }
         blade.Attacker = attacker;
         blade.Damage = damage;
         blade.Delegate = del;

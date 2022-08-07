@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class Bullet : Attacks
 {
-    [SerializeField] private float _damage;
-    public override float Damage { get => _damage; set => _damage = value; }
-
-    [SerializeField] private GameObject _attacker;
-    public override GameObject Attacker { get => _attacker; set => _attacker = value; }
-
-    [SerializeField] private float _lifeSpan = 3;
-    public override float LifeSpan => _lifeSpan;
-
-    [SerializeField] private float _actionDuration = 0.2f;
-    public override float ActionDuration => _actionDuration;
-
     private string _targetTag;
 
     static public ResourceGauge GetCostByAttackerTag(string tag)
@@ -33,7 +21,7 @@ public class Bullet : Attacks
                                     Vector3 direction, float damage)
     {
         var bullet = Create(attacker, del, direction, damage,
-                        Constants.kDefaultBulletSpeed, Constants.kTagPlayer);
+                        Constants.kDefaultBulletSpeed, Constants.kTagPlayer, Constants.kPrefabMonsterBullet);
         bullet.tag = Constants.kTagMonsters;
         bullet.layer = LayerMask.NameToLayer(Constants.kLayerMonsters);
         return bullet;
@@ -44,15 +32,25 @@ public class Bullet : Attacks
                                         Vector3 direction, float damage, float speed)
     {
         return Create(attacker, del, direction, damage,
-                        speed, Constants.kTagMonsters);
+                        speed, Constants.kTagMonsters, Constants.kPrefabBullet);
     }
 
     static public GameObject Create(GameObject attacker, AttackerDelegate del,
                                     Vector3 direction, float damage, float speed,
-                                    string targetTag)
+                                    string targetTag, string prefabName)
     {
-        var obj = Instantiate(GameManager.Instance.GetPrefab(Constants.kPrefabBullet));
+        var obj = Instantiate(GameManager.Instance.GetPrefab(prefabName));
+        if (obj == null)
+        {
+            Debug.LogError("No prefab found: " + prefabName);
+            return null;
+        }
         var bullet = obj.GetComponent<Bullet>();
+        if (bullet == null)
+        {
+            Debug.LogError("No Blade component found in prefab: " + prefabName);
+            return null;
+        }
         bullet.Attacker = attacker;
         bullet.Damage = damage;
         bullet.Delegate = del;
@@ -67,6 +65,11 @@ public class Bullet : Attacks
         var v = obj.GetComponent<Rigidbody2D>().velocity;
         v = direction.normalized * speed;
         obj.GetComponent<Rigidbody2D>().velocity = v;
+
+        // Bullet orientation
+        var scale = obj.transform.localScale;
+        scale.x *= Mathf.Sign(direction.x); // Flip collider and renderer
+        obj.transform.localScale = scale;
 
         return obj;
     }

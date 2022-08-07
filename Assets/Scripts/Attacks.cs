@@ -8,15 +8,19 @@ public abstract class Attacks : MonoBehaviour
     public delegate void AttackerDelegate(GameObject victim);
     public AttackerDelegate Delegate;
 
-    abstract public GameObject Attacker { get; set; }
+    [SerializeField] protected GameObject _attacker;
+    public GameObject Attacker { get => _attacker; set => _attacker = value; }
 
-    abstract public float Damage { get; set; }
+    [SerializeField] protected float _damage;
+    public float Damage { get => _damage; set => _damage = value; }
 
     // How long does attacker anime last.
-    abstract public float ActionDuration { get; }
+    [SerializeField] private float _actionDuration;
+    public float ActionDuration { get => _actionDuration; set => _actionDuration = value; }
 
     // How long does attack last (can Hit objects).
-    abstract public float LifeSpan { get; }
+    [SerializeField] protected float _lifeSpan = 3;
+    public float LifeSpan { get => _lifeSpan; set => _lifeSpan = value; }
 
     // Maybe do something to the attacker. Healing, Charging, etc.
     virtual public void Hit(GameObject victim)

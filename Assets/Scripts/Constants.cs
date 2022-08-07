@@ -36,6 +36,7 @@ static public class Constants
     #region Prefabs
     public static string kPrefabBlade = "Blade";
     public static string kPrefabBullet = "Bullet";
+    public static string kPrefabMonsterBullet = "MonsterBullet";
     public static string kPrefabDamageText = "DamageText";
     #endregion
 }
