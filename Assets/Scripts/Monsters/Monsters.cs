@@ -14,12 +14,14 @@ public abstract class Monsters : MonoBehaviour, IHitable
     {
         _incomingAttack = attack;
         Health -= attack.Damage;
+        StartCoroutine(FlashWhite(_flashDuration));
         return attack.Damage;
     }
 
     virtual protected void Die() => Destroy(gameObject);
 
     protected Rigidbody2D _rb;
+    protected SpriteRenderer _renderer;
 
     // Record if is hit between last and current frame.
     protected Attacks _incomingAttack;
@@ -30,9 +32,13 @@ public abstract class Monsters : MonoBehaviour, IHitable
     // Target for attacking, moving, etc.
     [SerializeField] protected GameObject _target;
 
+    [SerializeField] protected float _flashDuration = 0.1f;
+    [SerializeField] protected Material _flashMaterial;
+
     virtual public void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _renderer = GetComponent<SpriteRenderer>();
     }
 
     virtual public void Start()
@@ -40,6 +46,10 @@ public abstract class Monsters : MonoBehaviour, IHitable
         if (_target == null)
         {
             _target = GameObject.FindGameObjectWithTag(Constants.kTagPlayer);
+        }
+        if (_flashMaterial == null)
+        {
+            _flashMaterial = GameManager.Instance.GetMaterial(Constants.kMatFlashWhite);
         }
     }
 
@@ -80,6 +90,14 @@ public abstract class Monsters : MonoBehaviour, IHitable
         }
         // _rb.velocity = Vector2.zero;
         _backoffing = false;
+    }
+
+    virtual protected IEnumerator FlashWhite(float duration)
+    {
+        var original = _renderer.material;
+        _renderer.material = _flashMaterial;
+        yield return new WaitForSeconds(duration);
+        _renderer.material = original;
     }
 
 }

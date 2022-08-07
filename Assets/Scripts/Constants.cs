@@ -39,6 +39,10 @@ static public class Constants
     public static string kPrefabMonsterBullet = "MonsterBullet";
     public static string kPrefabDamageText = "DamageText";
     #endregion
+
+    #region Materials
+    public static string kMatFlashWhite = "WhiteFlash";
+    #endregion
 }
 
 public class FrameInput

@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
     private GameObject _player;
     private GameObject _canvas;
+    private Dictionary<string, GameObject> _prefabs = new Dictionary<string, GameObject>();
+    private Dictionary<string, Material> _materials = new Dictionary<string, Material>();
 
     private void Awake()
     {
@@ -24,12 +26,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Material GetMaterial(string name)
+    {
+        Material material;
+        if (!_materials.TryGetValue(name, out material))
+        {
+            material = (Material)Resources.Load("Materials/" + name, typeof(Material));
+            if (material == null)
+            {
+                Debug.LogError("Failed to fetch material: " + name);
+                return null;
+            }
+            _materials.Add(name, material);
+        }
+        return material;
+    }
+
     public GameObject GetPrefab(string name)
     {
-        var prefab = (GameObject)Resources.Load("Prefabs/" + name, typeof(GameObject));
-        if (prefab == null)
+        GameObject prefab;
+        if (!_prefabs.TryGetValue(name, out prefab))
         {
-            Debug.LogError("Failed to fetch prefab: " + name);
+            prefab = (GameObject)Resources.Load("Prefabs/" + name, typeof(GameObject));
+            if (prefab == null)
+            {
+                Debug.LogError("Failed to fetch prefab: " + name);
+                return null;
+            }
+            _prefabs.Add(name, prefab);
         }
         return prefab;
     }
