@@ -33,7 +33,12 @@ public abstract class Attacks : MonoBehaviour
         }
         float dealt = hitable.UnderAttack(this);
         Delegate?.Invoke(victim);
-        DamageDisplay.Display(victim.transform, dealt);
+
+        // Don't show floating text if damage is zero.
+        if (dealt > 0)
+        {
+            DamageDisplay.Display(victim.transform, dealt);
+        }
     }
 
     // Callback for victim when attack is done.

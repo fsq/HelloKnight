@@ -112,7 +112,16 @@ public class FSMPlayer : MonoBehaviour, IHitable
 
     public float UnderAttack(Attacks attack)
     {
-        return UnderAttack(attack.Damage);
+        // Still recovering from last hit.
+        if (_lastHit + _hitRecoverTime > Time.time)
+        {
+            return 0;
+        }
+        else
+        {
+            _lastHit = Time.time;
+            return UnderAttack(attack.Damage);
+        }
     }
 
     private float UnderAttack(float damage)
