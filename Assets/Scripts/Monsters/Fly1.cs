@@ -12,4 +12,19 @@ public class Fly1 : Monsters
 
     [SerializeField] private float _damage = 15;
     public override float Damage { get => _damage; set => _damage = value; }
+
+    public override void Awake()
+    {
+        base.Awake();
+    }
+
+    public override void Start()
+    {
+        base.Start();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+    }
 }

@@ -17,12 +17,14 @@ public class Zombie1 : Monsters
     [SerializeField] private float _trackingDistance = 0f;
     [SerializeField] private float _triggerDistance = 20f; // Start tracking when target in range.
 
-    void Start()
+    public override void Awake()
     {
-        if (_target == null)
-        {
-            _target = GameObject.FindGameObjectWithTag(Constants.kTagPlayer);
-        }
+        base.Awake();
+    }
+
+    public override void Start()
+    {
+        base.Start();
     }
 
     public override void Update()

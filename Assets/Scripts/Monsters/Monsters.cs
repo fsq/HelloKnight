@@ -30,9 +30,17 @@ public abstract class Monsters : MonoBehaviour, IHitable
     // Target for attacking, moving, etc.
     [SerializeField] protected GameObject _target;
 
-    protected void Awake()
+    virtual public void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    virtual public void Start()
+    {
+        if (_target == null)
+        {
+            _target = GameObject.FindGameObjectWithTag(Constants.kTagPlayer);
+        }
     }
 
     virtual public void Update()
