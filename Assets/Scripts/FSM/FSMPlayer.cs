@@ -83,6 +83,7 @@ public class FSMPlayer : MonoBehaviour, IHitable
             JumpUp = Input.GetButtonUp(Constants.kJump),
             JumpHold = Input.GetButton(Constants.kJump),
             X = Input.GetAxisRaw(Constants.kHorizontal),
+            Y = Input.GetAxisRaw(Constants.kVertical),
             BladeDown = Input.GetButtonDown(Constants.kBladeAttack),
             BulletDown = Input.GetButtonDown(Constants.kBulletAttack)
         };

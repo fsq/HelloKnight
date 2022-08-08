@@ -13,10 +13,9 @@ public class FSMState
 
 public class FSM
 {
+    // Shared across all State instances in this FSM.
     public StateParam StateParam { get; set; }
 
-    // State.HandleInput can potentially change frame input fields.
-    // The order MATTERS.
     private void HandleInput(FrameInput input)
     {
         var next_h = _state.H.HandleInput(input);

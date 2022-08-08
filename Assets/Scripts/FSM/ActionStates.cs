@@ -10,7 +10,7 @@ abstract public class ActionState : IdleState
         _lastAttackDoneTime = new Dictionary<Constants.AttackType, float>();
     }
 
-    public override State HandleInput(FrameInput input)
+    public override State HandleInput(in FrameInput input)
     {
         // Always collect attack inputs in Action states.
         // base.HandleInput() should be called in all subclasses.
@@ -99,13 +99,16 @@ public class AIdleState : ActionState
         return _lastAttackDownType;
     }
 
-    private State FireAttack(Constants.AttackType type)
+    private State FireAttack(Constants.AttackType type, in FrameInput input)
     {
         switch (type)
         {
             case Constants.AttackType.Blade:
                 Exit();
-                return FSM.CreateState(typeof(BladeAttackState), _sp);
+                // TODO: put FrameInput as one of the parameters for CreateState.
+                var state = (BladeAttackState)FSM.CreateState(typeof(BladeAttackState), _sp);
+                state.YInput = input.Y;
+                return state;
             case Constants.AttackType.Bullet:
                 Exit();
                 return FSM.CreateState(typeof(BulletAttackState), _sp);
@@ -113,13 +116,13 @@ public class AIdleState : ActionState
         }
     }
 
-    public override State HandleInput(FrameInput input)
+    public override State HandleInput(in FrameInput input)
     {
         base.HandleInput(input);
         var type = GetAttackType();
         if (type != Constants.AttackType.None)
         {
-            return FireAttack(type);
+            return FireAttack(type, input);
         }
         else
         {
@@ -157,7 +160,7 @@ class BulletAttackState : ActionState
         _timer = _attack.ActionDuration;
     }
 
-    public override State HandleInput(FrameInput input)
+    public override State HandleInput(in FrameInput input)
     {
         base.HandleInput(input);
 
@@ -186,6 +189,9 @@ class BulletAttackState : ActionState
 
 class BladeAttackState : ActionState
 {
+    // Input on Y axis.
+    public float YInput { get; set; }
+
     private GameObject _attackObj;
     private Attacks _attack;
     private float _timer;
@@ -201,8 +207,12 @@ class BladeAttackState : ActionState
     {
         base.Enter();
 
-        Vector3 direction = Vector3.right;
-        if (_sp.CurrentFlip) direction *= -1;
+        Vector3 direction = Vector3.zero;
+        if (YInput != 0)
+        {
+            direction = direction + Vector3.up * (YInput > 0 ? 1 : -1);
+        }
+        direction = direction + Vector3.right * (_sp.CurrentFlip ? -1 : 1);
 
         Attacks.AttackerDelegate onHit = delegate (GameObject victim)
         {
@@ -217,7 +227,7 @@ class BladeAttackState : ActionState
         _timer = _attack.ActionDuration;
     }
 
-    public override State HandleInput(FrameInput input)
+    public override State HandleInput(in FrameInput input)
     {
         base.HandleInput(input);
 
@@ -268,7 +278,7 @@ public class DieState : State
     }
 
     // Dead stays dead.
-    public override State HandleInput(FrameInput input) { return this; }
+    public override State HandleInput(in FrameInput input) { return this; }
 
     public override void Update(FrameInput input, FSMState context) { }
 

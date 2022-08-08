@@ -14,6 +14,9 @@ public class Blade : Attacks
         return new ResourceGauge();
     }
 
+    // <direction> has form (X, Y, <ignore>). 
+    // -/+ X flips blade to left/right.
+    // -/+ Y rotates blade to down/up.
     static public GameObject Create(GameObject attacker, AttackerDelegate del,
                                     Vector3 direction, float damage)
     {
@@ -34,11 +37,26 @@ public class Blade : Attacks
         blade.Damage = damage;
         blade.Delegate = del;
 
-        // Blade orientation
-        var scale = obj.transform.localScale;
-        scale.x *= Mathf.Sign(direction.x); // Flip collider and renderer
-        obj.transform.localScale = scale;
-
+        // Use Euler(or vector) representation instead of Quaternion, since Quaternions
+        // can only be multiplied but not added. We want both two rotations apply to the original
+        // transform, instead of first apply rotation1, then apply rotation2 on modified axis.
+        Vector3 rotation = Vector3.zero;
+        // Face up/down
+        if (direction.y != 0)
+        {
+            // Align the forward(Z) direction to Z axis, and align the Y direction to left/right,
+            // So that the X axis of blade sprite is facing up/down:
+            // https://forum.unity.com/threads/look-rotation-2d-equivalent.611044/#post-4092259
+            rotation = Quaternion.LookRotation(
+                                    Vector3.forward,
+                                    direction.y > 0 ? Vector3.left : Vector3.right
+                                ).eulerAngles;
+        }
+        // Rotate on Y axis to face left/right
+        rotation += Quaternion.LookRotation(
+                        direction.x > 0 ? Vector3.forward : Vector3.back,
+                        Vector3.up).eulerAngles;
+        obj.transform.rotation = Quaternion.Euler(rotation);
         return obj;
     }
 

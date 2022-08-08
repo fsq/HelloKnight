@@ -6,6 +6,7 @@ static public class Constants
 {
     #region Input
     public static string kHorizontal = "Horizontal";
+    public static string kVertical = "Vertical";
     public static string kJump = "Jump";
     public static string kBladeAttack = "Fire1";
     public static string kBulletAttack = "Fire2";
@@ -48,6 +49,7 @@ static public class Constants
 public class FrameInput
 {
     public float X;
+    public float Y;
     public bool JumpDown;
     public bool JumpHold;
     public bool JumpUp;

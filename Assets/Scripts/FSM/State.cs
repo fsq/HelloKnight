@@ -38,7 +38,7 @@ public class StateParam
     public DieCheckDelegate DieCheck;
     public DieDelegate OnDie;
 
-    #region Resourecs
+    #region Resources
     [SerializeField] public ResourceGauge resource;
     #endregion
 
@@ -66,8 +66,9 @@ public class StateParam
 abstract public class State
 {
     // Return next state if applicable.
-    // This function CAN modify fields in frame input.
-    abstract public State HandleInput(FrameInput input);
+    // Note that a defensive copy of input will be created at each call.
+    // This can potentially cause performance regression.
+    abstract public State HandleInput(in FrameInput input);
     abstract public void Update(FrameInput input, FSMState context);
     virtual public void FixedUpdate(FrameInput input, FSMState context) { }
 

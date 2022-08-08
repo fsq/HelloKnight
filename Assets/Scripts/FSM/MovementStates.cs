@@ -10,7 +10,7 @@ public class HMoveState : State
         return new HMoveState(stateParam);
     }
 
-    public override State HandleInput(FrameInput input)
+    public override State HandleInput(in FrameInput input)
     {
         _sp.PrevFlip = _sp.CurrentFlip;
         if (input.X == 0)
@@ -72,12 +72,12 @@ public class JumpingState : State
     }
 
 
-    public override State HandleInput(FrameInput input)
+    public override State HandleInput(in FrameInput input)
     {
         // Landed. 
         if (!_sp.IsInAir())
         {
-            // Prevent State to immediates exits, give it some time to leave ground.
+            // Prevent State from immediate exiting, give it some time to leave ground.
             if (Time.time - _enterTime < _prepareDuration)
             {
                 return null;
@@ -168,7 +168,7 @@ public class HIdleState : IdleState
         return new HIdleState(stateParam);
     }
 
-    public override State HandleInput(FrameInput input)
+    public override State HandleInput(in FrameInput input)
     {
         if (input.X != 0)
         {
@@ -195,7 +195,7 @@ public class VIdleState : IdleState
         return new VIdleState(stateParam);
     }
 
-    public override State HandleInput(FrameInput input)
+    public override State HandleInput(in FrameInput input)
     {
         bool inAir = _sp.IsInAir();
 
@@ -233,7 +233,7 @@ public class VIdleState : IdleState
 
 public class FallingState : State
 {
-    public override State HandleInput(FrameInput input)
+    public override State HandleInput(in FrameInput input)
     {
         if (!_sp.IsInAir())
         {
