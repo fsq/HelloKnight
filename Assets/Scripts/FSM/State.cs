@@ -12,6 +12,17 @@ public class ResourceGauge
     [SerializeField] public float MaxEnergy;
     [SerializeField] public float Energy;
 
+    public ResourceGauge(float health, float energy)
+    {
+        Health = MaxHealth = health;
+        Energy = MaxEnergy = energy;
+    }
+
+    static public ResourceGauge EmptyGauge()
+    {
+        return new ResourceGauge(0, 0);
+    }
+
     // Check if a>=b (ignoring Max<type> fields)
     static public bool GE(ResourceGauge a, ResourceGauge b)
     {
@@ -30,6 +41,7 @@ public class ResourceGauge
 public class StateParam
 {
     [NonSerialized] public GameObject Obj;
+    [NonSerialized] public FSMPlayer Player;
 
     // Check termination of FSM
     public delegate bool DieCheckDelegate(StateParam sp);
@@ -37,10 +49,6 @@ public class StateParam
 
     public DieCheckDelegate DieCheck;
     public DieDelegate OnDie;
-
-    #region Resources
-    [SerializeField] public ResourceGauge resource;
-    #endregion
 
     #region Movement
     [SerializeField] public float HorizontalSpeed = 9f;

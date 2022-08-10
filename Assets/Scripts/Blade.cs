@@ -11,7 +11,7 @@ public class Blade : Attacks
 
     static public ResourceGauge GetCostByAttackerTag(string tag)
     {
-        return new ResourceGauge();
+        return ResourceGauge.EmptyGauge();
     }
 
     // <direction> has form (X, Y, <ignore>). 

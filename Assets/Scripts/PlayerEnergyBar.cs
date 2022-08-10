@@ -24,9 +24,9 @@ public class PlayerEnergyBar : MonoBehaviour
     {
         if (_player == null) return;
         var size = _trans.sizeDelta;
-        size[0] = _lengthPerEnergy * _player.MaxEnergy;
+        size[0] = _lengthPerEnergy * _player.resource.MaxEnergy;
         _trans.sizeDelta = size;
-        _slider.maxValue = _player.MaxEnergy;
-        _slider.value = _player.Energy;
+        _slider.maxValue = _player.resource.MaxEnergy;
+        _slider.value = _player.resource.Energy;
     }
 }

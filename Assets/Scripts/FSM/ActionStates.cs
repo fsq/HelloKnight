@@ -53,7 +53,7 @@ abstract public class ActionState : IdleState
                             .Invoke(null, new object[] { _obj.tag });
             default:
                 Debug.LogError("Can't get cost for AttackType: " + type);
-                return new ResourceGauge();
+                return ResourceGauge.EmptyGauge();
         }
     }
 
@@ -90,7 +90,7 @@ public class AIdleState : ActionState
 
         // Check has enough resource to cast the attack.
         var cost = GetResourceCostFromAttackType(_lastAttackDownType);
-        if (!ResourceGauge.GE(_sp.resource, cost))
+        if (!ResourceGauge.GE(_sp.Player.resource, cost))
             return Constants.AttackType.None;
 
         // Clear buffered attack.
@@ -155,7 +155,7 @@ class BulletAttackState : ActionState
         if (_sp.CurrentFlip) direction *= -1;
         _attackObj = Bullet.Create(_obj, null, direction, _sp.BulletDamage, _bulletSpeed);
         _attack = _attackObj.GetComponent<Bullet>();
-        ResourceGauge.UseResource(_sp.resource,
+        ResourceGauge.UseResource(_sp.Player.resource,
                     GetResourceCostFromAttackType(Constants.AttackType.Bullet));
         _timer = _attack.ActionDuration;
     }
@@ -216,13 +216,13 @@ class BladeAttackState : ActionState
 
         Attacks.AttackerDelegate onHit = delegate (GameObject victim)
         {
-            _sp.resource.Energy = Mathf.Clamp(
-                                    _sp.resource.Energy + _sp.BladeEnergyBoost,
-                                    0, _sp.resource.MaxEnergy);
+            _sp.Player.resource.Energy = Mathf.Clamp(
+                                    _sp.Player.resource.Energy + _sp.BladeEnergyBoost,
+                                    0, _sp.Player.resource.MaxEnergy);
         };
         _attackObj = Blade.Create(_obj, onHit, direction, _sp.BladeDamage);
         _attack = _attackObj.GetComponent<Attacks>();
-        ResourceGauge.UseResource(_sp.resource,
+        ResourceGauge.UseResource(_sp.Player.resource,
                     GetResourceCostFromAttackType(Constants.AttackType.Blade));
         _timer = _attack.ActionDuration;
     }

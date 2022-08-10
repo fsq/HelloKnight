@@ -19,14 +19,7 @@ public class FSMPlayer : MonoBehaviour, IHitable
     [SerializeField] private float _bulletDamage = 15;
     [SerializeField] private float _hitRecoverTime = 0.5f; // Invulnerable time after hit.
 
-    [SerializeField] private float _maxHealth = 100;
-    [SerializeField] private float _maxEnergy = 30;
-
-    public float MaxHealth { get => _maxHealth; }
-    public float Health { get => sp.resource.Health; }
-
-    public float MaxEnergy { get => _maxEnergy; }
-    public float Energy { get => sp.resource.Energy; }
+    [SerializeField] public ResourceGauge resource = new ResourceGauge(100, 30);
 
     [SerializeField] private GameObject PlayerFeet;
     private bool IsInAir()
@@ -52,14 +45,13 @@ public class FSMPlayer : MonoBehaviour, IHitable
         CDs.Add(Constants.AttackType.Bullet, _bulletCoolDown);
 
         sp.Obj = this.gameObject;
+        sp.Player = this;
         sp.DieCheck = this.DieCheck;
         sp.OnDie = this.OnDie;
         sp.IsInAir = this.IsInAir;
         sp.AttackCoolDown = CDs;
         sp.BladeDamage = _bladeDamage;
         sp.BulletDamage = _bulletDamage;
-        sp.resource.MaxEnergy = _maxEnergy;
-        sp.resource.MaxHealth = sp.resource.Health = _maxHealth;
 
         _fsm = FSM.Create(sp);
     }
@@ -127,7 +119,7 @@ public class FSMPlayer : MonoBehaviour, IHitable
 
     private float UnderAttack(float damage)
     {
-        sp.resource.Health -= damage;
+        resource.Health -= damage;
         return damage;
         // Shock time
     }
@@ -135,11 +127,16 @@ public class FSMPlayer : MonoBehaviour, IHitable
     private bool DieCheck(StateParam sp)
     {
         //  TODO: parameterize
-        return sp.Obj.transform.position.y < -30 || sp.resource.Health <= 0;
+        return sp.Obj.transform.position.y < -30 || resource.Health <= 0;
     }
 
     private void OnDie()
     {
         SceneManager.LoadScene(Constants.kSceneDefault);
+    }
+
+    public void Heal(float amount)
+    {
+        resource.Health = Mathf.Clamp(resource.Health + amount, 0, resource.MaxHealth);
     }
 }

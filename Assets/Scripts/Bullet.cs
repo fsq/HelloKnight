@@ -8,7 +8,7 @@ public class Bullet : Attacks
 
     static public ResourceGauge GetCostByAttackerTag(string tag)
     {
-        var cost = new ResourceGauge();
+        var cost = ResourceGauge.EmptyGauge();
         if (tag == Constants.kTagPlayer)
         {
             cost.Energy = 15;
