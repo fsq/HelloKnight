@@ -15,7 +15,8 @@ public class ResourceGauge
     public ResourceGauge(float health, float energy)
     {
         Health = MaxHealth = health;
-        Energy = MaxEnergy = energy;
+        MaxEnergy = energy;
+        Energy = 0;
     }
 
     // Add all resources in <amount> with clamping.
