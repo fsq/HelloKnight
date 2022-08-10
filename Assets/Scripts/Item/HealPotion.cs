@@ -14,6 +14,11 @@ public class HealPotion : Item
         return potion;
     }
 
+    protected override void Start()
+    {
+        base.Start();
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.CompareTag(Constants.kTagPlayer))

@@ -18,6 +18,7 @@ public abstract class Monsters : MonoBehaviour, IHitable
         return attack.Damage;
     }
 
+    // TODO: Trigger events to GameManager to spawn items, coins etc.
     virtual protected void Die() => Destroy(gameObject);
 
     protected Rigidbody2D _rb;

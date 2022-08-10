@@ -37,7 +37,7 @@ public abstract class Attacks : MonoBehaviour
         // Don't show floating text if damage is zero.
         if (dealt > 0)
         {
-            DamageDisplay.Display(victim.transform, dealt);
+            TextDisplay.DisplayDamage(victim.transform, dealt);
         }
     }
 

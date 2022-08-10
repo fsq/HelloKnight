@@ -7,7 +7,7 @@ abstract public class Item : MonoBehaviour
     private GameObject _playerObj;
     private FSMPlayer _player;
 
-    protected Item()
+    virtual protected void Start()
     {
         _playerObj = GameManager.Instance.GetPlayerGameObj();
         _player = _playerObj.GetComponent<FSMPlayer>();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class DamageDisplay : MonoBehaviour
+public class TextDisplay : MonoBehaviour
 {
     [SerializeField] private float _damage;
     // 1. Text pops up and enlarges quickly
@@ -20,12 +20,22 @@ public class DamageDisplay : MonoBehaviour
     [SerializeField] private float _fontDisappearSpeed = 0.8f;
     private TextMeshPro _tmp;
 
-    public static void Display(Transform transform, float damage)
+    public static void DisplayDamage(Transform transform, float damage)
     {
-        var prefab = GameManager.Instance.GetPrefab(Constants.kPrefabDamageText);
+        Display(transform, damage, Constants.kPrefabDamageText);
+    }
+
+    public static void DisplayHealthRecovery(Transform transform, float damage)
+    {
+        Display(transform, damage, Constants.kPrefabHealthRecoveryText);
+    }
+
+    private static void Display(Transform transform, float damage, string prefabName)
+    {
+        var prefab = GameManager.Instance.GetPrefab(prefabName);
         var obj = Instantiate(prefab);
         obj.transform.position = transform.position;
-        var text = obj.GetComponent<DamageDisplay>();
+        var text = obj.GetComponent<TextDisplay>();
         text.Init(damage);
     }
 

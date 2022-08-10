@@ -137,6 +137,10 @@ public class FSMPlayer : MonoBehaviour, IHitable
 
     public void Heal(ResourceGauge amount)
     {
+        if (amount.Health > 0)
+        {
+            TextDisplay.DisplayHealthRecovery(transform, amount.Health);
+        }
         resource.Change(amount);
     }
 }
