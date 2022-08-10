@@ -18,6 +18,13 @@ public class ResourceGauge
         Energy = MaxEnergy = energy;
     }
 
+    // Add all resources in <amount> with clamping.
+    public void Change(ResourceGauge amount)
+    {
+        Health = Mathf.Clamp(Health + amount.Health, 0, MaxHealth);
+        Energy = Mathf.Clamp(Energy + amount.Energy, 0, MaxEnergy);
+    }
+
     static public ResourceGauge EmptyGauge()
     {
         return new ResourceGauge(0, 0);

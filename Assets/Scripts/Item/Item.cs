@@ -13,8 +13,13 @@ abstract public class Item : MonoBehaviour
         _player = _playerObj.GetComponent<FSMPlayer>();
     }
 
-    protected void HealPlayer(float amount)
+    protected void HealPlayer(ResourceGauge amount)
     {
         _player.Heal(amount);
+    }
+
+    virtual protected void Destruct()
+    {
+        Destroy(gameObject);
     }
 }

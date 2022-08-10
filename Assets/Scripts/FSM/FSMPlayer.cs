@@ -135,8 +135,8 @@ public class FSMPlayer : MonoBehaviour, IHitable
         SceneManager.LoadScene(Constants.kSceneDefault);
     }
 
-    public void Heal(float amount)
+    public void Heal(ResourceGauge amount)
     {
-        resource.Health = Mathf.Clamp(resource.Health + amount, 0, resource.MaxHealth);
+        resource.Change(amount);
     }
 }
