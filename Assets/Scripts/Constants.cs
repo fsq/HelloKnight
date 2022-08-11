@@ -40,6 +40,7 @@ static public class Constants
     public static string kPrefabMonsterBullet = "MonsterBullet";
     public static string kPrefabDamageText = "DamageText";
     public static string kPrefabHealthRecoveryText = "HealthRecoveryText";
+    public static string kPrefabItemCoin = "Item/Coin";
     #endregion
 
     #region Materials

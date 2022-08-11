@@ -13,6 +13,32 @@ public class GameManager : MonoBehaviour
     private Dictionary<string, GameObject> _prefabs = new Dictionary<string, GameObject>();
     private Dictionary<string, Material> _materials = new Dictionary<string, Material>();
 
+    private void OnEnable()
+    {
+        EventManager.onMonsterDie += OnMonsterDie;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.onMonsterDie -= OnMonsterDie;
+    }
+
+    private void OnMonsterDie(Monsters monster)
+    {
+        if (monster == null)
+        {
+            Debug.LogError("'monster' parameter cannot be null.");
+            return;
+        }
+        // TODO: Move to a Spawner class.
+        SpawnCoin(monster.transform.position, monster.CoinDrop);
+    }
+
+    private void SpawnCoin(Vector3 position, int amount)
+    {
+        Coin.Create(position, amount);
+    }
+
     private void Awake()
     {
         if (Instance == null)

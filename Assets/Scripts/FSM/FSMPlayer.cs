@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 public class FSMPlayer : MonoBehaviour, IHitable
 {
     [SerializeField] public StateParam sp;
+    [SerializeField] private int _coin;
     [SerializeField] private float _bladeCoolDown = 0.3f;
     [SerializeField] private float _bladeDamage = 10;
 
@@ -142,5 +143,15 @@ public class FSMPlayer : MonoBehaviour, IHitable
             TextDisplay.DisplayHealthRecovery(transform, amount.Health);
         }
         resource.Change(amount);
+    }
+
+    // TODO: Maybe use this same method for both earning/spending coins?
+    public void PickupCoin(int amount)
+    {
+        if (amount <= 0)
+        {
+            Debug.LogWarning("Coin amount is not positive: " + amount);
+        }
+        _coin += amount;
     }
 }

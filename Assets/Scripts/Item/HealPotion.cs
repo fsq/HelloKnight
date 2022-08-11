@@ -23,8 +23,7 @@ public class HealPotion : Item
     {
         if (other.collider.CompareTag(Constants.kTagPlayer))
         {
-            var player = other.collider.GetComponent<FSMPlayer>();
-            player.Heal(_amount);
+            HealPlayer(_amount);
             Destruct();
         }
     }

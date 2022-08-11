@@ -10,6 +10,8 @@ public abstract class Monsters : MonoBehaviour, IHitable
 
     abstract public float Damage { get; set; }
 
+    [SerializeField] public int CoinDrop;
+
     virtual public float UnderAttack(Attacks attack)
     {
         _incomingAttack = attack;
@@ -18,8 +20,11 @@ public abstract class Monsters : MonoBehaviour, IHitable
         return attack.Damage;
     }
 
-    // TODO: Trigger events to GameManager to spawn items, coins etc.
-    virtual protected void Die() => Destroy(gameObject);
+    virtual protected void Die()
+    {
+        EventManager.onMonsterDie(this);
+        Destroy(gameObject);
+    }
 
     protected Rigidbody2D _rb;
     protected SpriteRenderer _renderer;
