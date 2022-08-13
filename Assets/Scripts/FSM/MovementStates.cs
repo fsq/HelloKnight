@@ -25,10 +25,15 @@ public class HMoveState : State
         }
     }
 
+    public override void FixedUpdate(FrameInput input, FSMState context)
+    {
+        base.FixedUpdate(input, context);
+        _obj.transform.position += Mathf.Sign(input.X) * Vector3.right *
+            Time.deltaTime * _sp.HorizontalSpeed;
+    }
+
     public override void Update(FrameInput input, FSMState context)
     {
-        _obj.transform.position += Mathf.Sign(input.X) * Vector3.right *
-                    Time.deltaTime * _sp.HorizontalSpeed;
         if (_sp.CurrentFlip ^ _sp.PrevFlip)
         {
             _obj.GetComponent<SpriteRenderer>().flipX = _sp.CurrentFlip;

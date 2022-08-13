@@ -216,6 +216,8 @@ class BladeAttackState : ActionState
 
         Attacks.AttackerDelegate onHit = delegate (GameObject victim)
         {
+            // Restore energy only when hit an actual enemy.
+            if (!victim.CompareTag(Constants.kTagMonsters)) return;
             _sp.Player.resource.Energy = Mathf.Clamp(
                                     _sp.Player.resource.Energy + _sp.BladeEnergyBoost,
                                     0, _sp.Player.resource.MaxEnergy);

@@ -76,7 +76,8 @@ public class Bullet : Attacks
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(_targetTag))
+        if (other.CompareTag(_targetTag) ||
+            other.CompareTag(Constants.kTagDoor)) // Or other destructible environment.
         {
             Hit(other.gameObject);
         }

@@ -24,6 +24,7 @@ static public class Constants
     public static string kTagGround = "Ground";
     public static string kTagPlayerAttack = "PlayerAttack";
     public static string kTagMonsters = "Monsters";
+    public static string kTagDoor = "Door";
     #endregion
 
     #region Layers
