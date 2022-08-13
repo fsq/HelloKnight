@@ -10,8 +10,16 @@ abstract public class Item : MonoBehaviour
 
     virtual protected void Start()
     {
-        _playerObj ??= GameManager.Instance.GetPlayerGameObj();
-        _player ??= _playerObj.GetComponent<FSMPlayer>();
+        var player = GameManager.Instance.GetPlayerGameObj();
+        // TODO: Weird bug if replace with "??=": https://answers.unity.com/questions/1915597/-bug-in-start-when-updating-static-variable-after-2.html
+        if (_playerObj == null)
+        {
+            _playerObj = player;
+        }
+        if (_player == null)
+        {
+            _player = _playerObj.GetComponent<FSMPlayer>();
+        }
     }
 
     protected void HealPlayer(ResourceGauge amount)

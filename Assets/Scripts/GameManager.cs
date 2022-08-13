@@ -34,9 +34,17 @@ public class GameManager : MonoBehaviour
         SpawnCoin(monster.transform.position, monster.CoinDrop);
     }
 
-    private void SpawnCoin(Vector3 position, int amount)
+    static public void SpawnCoin(Vector3 position, int amount)
     {
-        Coin.Create(position, amount);
+        var coins = Coin.Create(amount);
+
+        // Add random forces to spill the coins.
+        foreach (var coin in coins)
+        {
+            coin.transform.position = position;
+            float angle = Random.Range(30f, 150f);
+            coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 0.025f, ForceMode2D.Impulse);
+        }
     }
 
     private void Awake()
