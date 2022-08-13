@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 public class FSMPlayer : MonoBehaviour, IHitable
 {
     [SerializeField] public StateParam sp;
-    [SerializeField] private int _coin;
+    [SerializeField] public int Coin;
     [SerializeField] private float _bladeCoolDown = 0.3f;
     [SerializeField] private float _bladeDamage = 10;
 
@@ -152,6 +152,6 @@ public class FSMPlayer : MonoBehaviour, IHitable
         {
             Debug.LogWarning("Coin amount is not positive: " + amount);
         }
-        _coin += amount;
+        Coin += amount;
     }
 }
