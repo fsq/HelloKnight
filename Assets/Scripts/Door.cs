@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviour, IHitable
 {
 
     [SerializeField] private Monsters _monsterTrigger;
@@ -30,6 +30,13 @@ public class Door : MonoBehaviour
     }
 
     void Update() { }
+
+    // Act like an obstacle for now.
+    public float UnderAttack(Attacks attack)
+    {
+        Attacks.Destruct(attack);
+        return 0;
+    }
 
     void CheckMonsterDeath(Monsters monster)
     {

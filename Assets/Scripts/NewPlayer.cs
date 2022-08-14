@@ -207,7 +207,7 @@ public class NewPlayer : MonoBehaviour
                 {
                     // Cancel melee attack immediately when flip.
                     // TODO: move this to Blade class, to check Attacker.
-                    attack.Destruct();
+                    Attacks.Destruct(attack);
                 }
                 _earlyTerminateAttack = false;
                 break;

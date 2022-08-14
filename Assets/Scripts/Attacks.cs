@@ -47,7 +47,7 @@ public abstract class Attacks : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Preferred version to instance.Destruct(). Attacks have internal timer,
+    // Preferred version to Destroy(attack). Attacks have internal timer,
     // and can already become null when caller trying to destruct them.
     static public void Destruct(Attacks attack)
     {
@@ -58,7 +58,7 @@ public abstract class Attacks : MonoBehaviour
     }
 
     // Explicitly destruct this attack.
-    virtual public void Destruct()
+    virtual protected void Destruct()
     {
         Destroy(gameObject);
     }

@@ -29,6 +29,7 @@ static public class Constants
 
     #region Layers
     public static string kLayerMonsters = "Monsters";
+    public static string kLayerObstacle = "Obstacle";
     #endregion
 
     #region Scenes

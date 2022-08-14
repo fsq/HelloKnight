@@ -16,7 +16,11 @@ public abstract class Monsters : MonoBehaviour, IHitable
     {
         _incomingAttack = attack;
         Health -= attack.Damage;
-        StartCoroutine(FlashWhite(_flashDuration));
+        if (!_isFlashing)
+        {
+            StartCoroutine(FlashWhite(_flashDuration));
+
+        }
         return attack.Damage;
     }
 
@@ -40,6 +44,7 @@ public abstract class Monsters : MonoBehaviour, IHitable
 
     [SerializeField] protected float _flashDuration = 0.1f;
     [SerializeField] protected Material _flashMaterial;
+    private bool _isFlashing = false;
 
     virtual public void Awake()
     {
@@ -100,10 +105,12 @@ public abstract class Monsters : MonoBehaviour, IHitable
 
     virtual protected IEnumerator FlashWhite(float duration)
     {
+        _isFlashing = true;
         var original = _renderer.material;
         _renderer.material = _flashMaterial;
         yield return new WaitForSeconds(duration);
         _renderer.material = original;
+        _isFlashing = false;
     }
 
 }

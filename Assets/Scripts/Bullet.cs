@@ -81,7 +81,7 @@ public class Bullet : Attacks
         {
             Hit(other.gameObject);
         }
-        else if (other.CompareTag(Constants.kTagGround))
+        else if (other.gameObject.layer == LayerMask.NameToLayer(Constants.kLayerObstacle))
         {
             Destruct();
         }
