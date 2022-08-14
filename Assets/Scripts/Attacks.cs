@@ -28,7 +28,7 @@ public abstract class Attacks : MonoBehaviour
         var hitable = victim.gameObject.GetComponent<IHitable>();
         if (hitable == null)
         {
-            Debug.LogError("There is no hitable interface from victim: " + victim.name);
+            Debug.Log("There is no hitable interface from victim: " + victim.name);
             return;
         }
         float dealt = hitable.UnderAttack(this);
