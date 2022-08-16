@@ -8,6 +8,10 @@ abstract public class Item : MonoBehaviour
     static private GameObject _playerObj;
     static private FSMPlayer _player;
 
+    [SerializeField] public int Price;
+    [SerializeField] public string Icon; // Path to the icon sprite.
+    [SerializeField] public string Description;
+
     virtual protected void Start()
     {
         var player = GameManager.Instance.GetPlayerGameObj();

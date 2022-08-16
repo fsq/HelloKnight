@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private GameObject _canvas;
     private Dictionary<string, GameObject> _prefabs = new Dictionary<string, GameObject>();
     private Dictionary<string, Material> _materials = new Dictionary<string, Material>();
+    private Dictionary<string, Sprite> _sprites = new Dictionary<string, Sprite>();
 
     private void OnEnable()
     {
@@ -90,6 +91,23 @@ public class GameManager : MonoBehaviour
             _prefabs.Add(name, prefab);
         }
         return prefab;
+    }
+
+    // Do NOT need to add file extension (.png etc), otherwise Load returns null.
+    public Sprite GetSprite(string name)
+    {
+        Sprite sprite;
+        if (!_sprites.TryGetValue(name, out sprite))
+        {
+            sprite = (Sprite)Resources.Load("Sprites/" + name, typeof(Sprite));
+            if (sprite == null)
+            {
+                Debug.LogError("Failed to fetch sprite: " + name);
+                return null;
+            }
+            _sprites.Add(name, sprite);
+        }
+        return sprite;
     }
 
     public GameObject GetPlayerGameObj()
