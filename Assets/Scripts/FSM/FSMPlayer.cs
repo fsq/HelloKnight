@@ -21,6 +21,7 @@ public class FSMPlayer : MonoBehaviour, IHitable
     [SerializeField] private float _hitRecoverTime = 0.5f; // Invulnerable time after hit.
 
     [SerializeField] public ResourceGauge resource = new ResourceGauge(100, 30);
+    [SerializeField] public BuffManager Buffs = new BuffManager();
 
     [SerializeField] private GameObject PlayerFeet;
     private bool IsInAir()
@@ -153,5 +154,10 @@ public class FSMPlayer : MonoBehaviour, IHitable
             Debug.LogWarning("Coin amount is not positive: " + amount);
         }
         Coin += amount;
+    }
+
+    public void ApplyBuff(BuffManager.BuffType type)
+    {
+        Buffs.Apply(type, 1);
     }
 }

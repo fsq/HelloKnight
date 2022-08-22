@@ -222,7 +222,7 @@ class BladeAttackState : ActionState
                                     _sp.Player.resource.Energy + _sp.BladeEnergyBoost,
                                     0, _sp.Player.resource.MaxEnergy);
         };
-        _attackObj = Blade.Create(_obj, onHit, direction, _sp.BladeDamage);
+        _attackObj = Blade.Create(_obj, onHit, direction, _sp.BladeDamage, _sp.Player.Buffs);
         _attack = _attackObj.GetComponent<Attacks>();
         ResourceGauge.UseResource(_sp.Player.resource,
                     GetResourceCostFromAttackType(Constants.AttackType.Blade));

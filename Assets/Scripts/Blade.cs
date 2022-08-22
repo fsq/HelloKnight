@@ -18,10 +18,25 @@ public class Blade : Attacks
     // -/+ X flips blade to left/right.
     // -/+ Y rotates blade to down/up.
     static public GameObject Create(GameObject attacker, AttackerDelegate del,
-                                    Vector3 direction, float damage)
+                                    Vector3 direction, float damage, BuffManager buffs)
     {
         var obj = Instantiate(GameManager.Instance.GetPrefab(Constants.kPrefabBlade),
                                 attacker.transform);
+        // Extend attack range per LongBlade buff.
+        if (buffs != null)
+        {
+            int longBladeStack = buffs.GetStackCount(BuffManager.BuffType.LongBlade);
+            if (longBladeStack == 1)
+            {
+                obj.transform.localScale *= BuffManager.kLongBladeMultiplier;
+            }
+            else if (longBladeStack > 1)
+            {
+                Debug.LogWarning("LongBlade buff of stack size " +
+                                 longBladeStack +
+                                 " is not implemented.");
+            }
+        }
         if (obj == null)
         {
             Debug.LogError("No prefab found: " + Constants.kPrefabBlade);
@@ -58,6 +73,12 @@ public class Blade : Attacks
                         Vector3.up).eulerAngles;
         obj.transform.rotation = Quaternion.Euler(rotation);
         return obj;
+    }
+
+    static public GameObject Create(GameObject attacker, AttackerDelegate del,
+                                   Vector3 direction, float damage)
+    {
+        return Create(attacker, del, direction, damage, null);
     }
 
     public override void Hit(GameObject victim)

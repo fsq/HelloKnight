@@ -56,7 +56,7 @@ public class Shop : MonoBehaviour
         var entry = Instantiate(_template, transform);
         var rect_trans = entry.GetComponent<RectTransform>();
         float height = rect_trans.sizeDelta.y + 20;
-        rect_trans.anchoredPosition = new Vector2(0, height * index);
+        rect_trans.anchoredPosition = new Vector2(0, -height * index);
 
         entry.Find("Icon").GetComponent<Image>().sprite = icon;
         entry.Find("Name").GetComponent<TextMeshProUGUI>().text = name;

@@ -8,7 +8,7 @@ abstract public class Item : MonoBehaviour
     static private GameObject _playerObj;
     static private FSMPlayer _player;
 
-    [SerializeField] public Sprite Icon; // Path to the icon sprite.
+    [SerializeField] public Sprite Icon;
     [SerializeField] public string Name;
     [SerializeField] public string Description;
     [SerializeField] public int Price;
@@ -35,6 +35,11 @@ abstract public class Item : MonoBehaviour
     protected void PickupCoin(int amount)
     {
         _player.PickupCoin(amount);
+    }
+
+    protected void AppendCharm(BuffManager.BuffType type)
+    {
+        _player.ApplyBuff(type);
     }
 
     virtual protected void Destruct()
