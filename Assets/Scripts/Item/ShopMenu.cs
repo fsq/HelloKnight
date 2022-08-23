@@ -4,12 +4,12 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class Shop : MonoBehaviour
+public class ShopMenu : MonoBehaviour
 {
     [SerializeField] public List<Item> Stock;
 
     // Keep singleton in Scene.
-    public static Shop Instance;
+    public static ShopMenu Instance;
 
     private Transform _container;
     private Transform _template;
